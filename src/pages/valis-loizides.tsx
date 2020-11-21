@@ -3,7 +3,7 @@ import { PageProps, useStaticQuery, graphql } from "gatsby";
 import Img from "gatsby-image";
 
 import Layout from "../components/layout";
-import Text from "../components/text";
+import TextPage from "../components/text-page";
 import ImageWrapper from "../components/image-wrapper";
 
 const ValisLoizides: React.FC<PageProps> = (props) => {
@@ -25,7 +25,7 @@ const ValisLoizides: React.FC<PageProps> = (props) => {
 
   return (
     <Layout>
-      <Text>
+      <TextPage>
         <ImageWrapper>
           <Img fluid={data.file.childImageSharp.fluid} alt="Valis Loizides" />
         </ImageWrapper>
@@ -46,7 +46,7 @@ const ValisLoizides: React.FC<PageProps> = (props) => {
           contemporary, international art, with an emphasis on paintings and
           drawings.
         </p>
-      </Text>
+      </TextPage>
     </Layout>
   );
 };

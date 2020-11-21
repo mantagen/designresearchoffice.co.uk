@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import { graphql, Link, GatsbyLinkProps, useStaticQuery } from "gatsby";
+import { Link, GatsbyLinkProps } from "gatsby";
 import "fontsource-roboto";
 
 import GlobalStyle from "./global-style";
+import works from "../works.json";
 
 type NavLinkProps = Omit<GatsbyLinkProps<undefined>, "ref">;
 const primaryNavLinks: NavLinkProps[] = [
@@ -33,12 +34,12 @@ const primaryNavLinks: NavLinkProps[] = [
 ];
 
 const Main = styled.main`
-  margin: 32px 50px 0 275px;
-  max-width: 632px;
+  margin: 32px 50px 0 325px;
+  max-width: 1000px;
 
   @media (max-width: 600px) {
     margin: 3rem 1rem;
-    max-width: 100vw;
+    max-width: auto;
   }
 `;
 
@@ -155,24 +156,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = (props) => {
   const { children, secondaryNavProps } = props;
 
-  const data = useStaticQuery(graphql`
-    query {
-      allFile(
-        sort: { fields: name, order: DESC }
-        filter: { relativeDirectory: { eq: "pages/work" } }
-      ) {
-        edges {
-          node {
-            id
-            name
-          }
-        }
-      }
-    }
-  `);
-
-  const works = data.allFile.edges;
-
   return (
     <Fragment>
       <GlobalStyle />
@@ -186,13 +169,10 @@ const Layout: React.FC<LayoutProps> = (props) => {
         </PrimaryNavUl>
         {secondaryNavProps && (
           <SecondaryNavUl {...secondaryNavProps}>
-            {works.map(({ node }) => (
-              <li key={`nav-${node.id}`}>
-                <NavLink
-                  to={`/work/${node.name.toLowerCase()}`}
-                  activeStyle={{ opacity: 1 }}
-                >
-                  {node.name.split("-").join(" ")}
+            {works.map(({ title, slug }) => (
+              <li key={`nav-${slug}`}>
+                <NavLink to={`/work/${slug}`} activeStyle={{ opacity: 1 }}>
+                  {title[0]}
                 </NavLink>
               </li>
             ))}

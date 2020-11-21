@@ -2,12 +2,12 @@ import React from "react";
 import { PageProps } from "gatsby";
 
 import Layout from "../components/layout";
-import Text from "../components/text";
+import TextPage from "../components/text-page";
 
 const Office: React.FC<PageProps> = (props) => {
   return (
     <Layout>
-      <Text>
+      <TextPage>
         <h2>Design Research Office</h2>
         <p>
           The practice was established in 2006 to provide services and solutions
@@ -66,7 +66,7 @@ const Office: React.FC<PageProps> = (props) => {
         </p>
         <br />
         <p>instagram.com/valisloizides</p>
-      </Text>
+      </TextPage>
     </Layout>
   );
 };
