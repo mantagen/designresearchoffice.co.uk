@@ -6,6 +6,15 @@
 
 module.exports = {
   /* Your site config here */
+  siteMetadata: {
+    title: `Design Research Office`,
+    author: `mantagen`,
+    description: `Valis Loizides, Design Research Office, London`,
+    siteUrl: `http://designresearchoffice.co.uk`,
+    social: {
+      twitter: `kylemathews`,
+    },
+  },
   plugins: [
     {
       resolve: `gatsby-plugin-typescript`,

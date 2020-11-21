@@ -4,7 +4,6 @@ import { graphql, PageProps, useStaticQuery } from "gatsby";
 import Layout from "../../components/layout";
 import WorkText from "../../components/work-text";
 import SafeImage from "../../components/safe-image";
-import { ImageData } from "../../types/image-data";
 
 const MansionHouse: React.FC<PageProps> = (props) => {
   const data = useStaticQuery(graphql`

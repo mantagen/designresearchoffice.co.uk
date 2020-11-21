@@ -6,6 +6,6 @@ export type ImageData = {
     name: string;
     childImageSharp: {
       fluid: FluidObject | FluidObject[];
-    };
+    } | null;
   };
 };
