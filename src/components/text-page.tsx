@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Text = styled.div`
+const TextPage = styled.div`
   max-width: 632px;
 
   p {
@@ -10,4 +10,4 @@ const Text = styled.div`
   }
 `;
 
-export default Text;
+export default TextPage;

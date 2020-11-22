@@ -52,13 +52,6 @@ ul {
 .spacer {
   margin-left: 6px;
 }
-
-h1 {
-  text-transform: uppercase;
-}
-h2 {
-  margin: 0em;
-}
 p {
   margin: 0;
 }
