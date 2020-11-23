@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useState } from "react";
 import styled from "styled-components";
 import { Link, GatsbyLinkProps } from "gatsby";
 import "fontsource-roboto";
@@ -87,6 +87,7 @@ const NavToggle = styled.button`
 
   @media (max-width: 600px) {
     display: block;
+    cursor: pointer;
     position: fixed;
     top: 1rem;
     right: 1rem;
@@ -112,7 +113,7 @@ const NavToggle = styled.button`
   }
 `;
 
-const PrimaryNavUl = styled.ul`
+const PrimaryNavUl = styled.ul<{ forceOpen: boolean }>`
   padding-top: 32px;
   padding-left: 38px;
   padding-right: 38px;
@@ -124,6 +125,12 @@ const PrimaryNavUl = styled.ul`
 
   &:hover a {
     opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    a {
+      opacity: 1;
+    }
   }
 `;
 
@@ -155,12 +162,17 @@ interface LayoutProps {
 }
 const Layout: React.FC<LayoutProps> = (props) => {
   const { children, secondaryNavProps } = props;
+  const [navOpen, setNavOpen] = useState(false);
+
+  const onNavToggle = useCallback(() => {
+    setNavOpen(!navOpen);
+  }, [navOpen]);
 
   return (
     <Fragment>
       <GlobalStyle />
-      <LeftPanel>
-        <PrimaryNavUl className="primary-nav hover-target--1">
+      <LeftPanel isOpen={navOpen}>
+        <PrimaryNavUl forceOpen={navOpen}>
           {primaryNavLinks.map((props, i) => (
             <li key={`nav-${i}`}>
               <NavLink {...props} activeStyle={{ opacity: 1 }} />
@@ -179,7 +191,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
           </SecondaryNavUl>
         )}
       </LeftPanel>
-      <NavToggle>menu</NavToggle>
+      <NavToggle onClick={onNavToggle}>menu</NavToggle>
       <Main>{children}</Main>
     </Fragment>
   );

@@ -27,7 +27,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 name
                 childImageSharp {
                   fluid {
-                    base64
                     aspectRatio
                     src
                     srcSet

@@ -31,11 +31,7 @@ const Carousel = () => {
             name
             childImageSharp {
               fluid {
-                base64
-                aspectRatio
-                src
-                srcSet
-                sizes
+                ...GatsbyImageSharpFluid_withWebp_noBase64
               }
             }
           }
@@ -87,6 +83,8 @@ const Carousel = () => {
                 <Img
                   fluid={edge.node.childImageSharp.fluid}
                   alt={edge.node.name}
+                  backgroundColor={"#f2f2f2"}
+                  loading="eager"
                 />
               </div>
             )

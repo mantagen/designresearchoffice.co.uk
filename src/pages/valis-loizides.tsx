@@ -4,19 +4,19 @@ import Img from "gatsby-image";
 
 import Layout from "../components/layout";
 import TextPage from "../components/text-page";
-import ImageWrapper from "../components/image-wrapper";
+import SafeImage, { ImageNode } from "../components/safe-image";
 
 const ValisLoizides: React.FC<PageProps> = (props) => {
-  const data = useStaticQuery(graphql`
+  const data: {
+    file: ImageNode;
+  } = useStaticQuery(graphql`
     query {
       file(relativePath: { eq: "images/valis.jpg" }) {
+        id
+        name
         childImageSharp {
           fluid {
-            base64
-            aspectRatio
-            src
-            srcSet
-            sizes
+            ...GatsbyImageSharpFluid_withWebp_noBase64
           }
         }
       }
@@ -26,9 +26,7 @@ const ValisLoizides: React.FC<PageProps> = (props) => {
   return (
     <Layout>
       <TextPage>
-        <ImageWrapper>
-          <Img fluid={data.file.childImageSharp.fluid} alt="Valis Loizides" />
-        </ImageWrapper>
+        <SafeImage node={data.file} alt="Valis Loizides" />
         <p>
           Valis Loizides was born in Cyprus. He graduated from the Architectural
           Association School of Architecture in London with Honours in 1997. He
