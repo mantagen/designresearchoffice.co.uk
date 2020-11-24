@@ -32,6 +32,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                     srcSet
                     sizes
                   }
+                  fixed(width: 960) {
+                    src
+                  }
                 }    
               }
             }

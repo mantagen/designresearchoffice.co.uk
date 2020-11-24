@@ -1,10 +1,13 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, GatsbyLinkProps } from "gatsby";
 import "fontsource-roboto";
+import { FocusOn } from "react-focus-on";
 
 import GlobalStyle from "./global-style";
 import works from "../works.json";
+import Seo, { SeoProps } from "./seo";
+import useIsMobile from "../hooks/useIsMobile";
 
 type NavLinkProps = Omit<GatsbyLinkProps<undefined>, "ref">;
 const primaryNavLinks: NavLinkProps[] = [
@@ -73,10 +76,14 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
       top: 0;
       right: 0;
       bottom: 0;
+      right: 0;
       left: 0;
       z-index: 9;
       background-color: white;
       padding: 1rem;
+      padding-bottom: 3rem;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
       `}
     }
   }
@@ -89,13 +96,15 @@ const NavToggle = styled.button`
     display: block;
     cursor: pointer;
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 2rem;
+    width: 2rem;
+    padding: 0.5rem;
     z-index: 10;
     color: transparent;
     background: transparent;
     border: none;
-    outline: none;
 
     &::after {
       color: black;
@@ -104,11 +113,12 @@ const NavToggle = styled.button`
       position: absolute;
       width: 1rem;
       height: 1rem;
-      color: black;
+      margin: 0.5rem;
       top: 0;
       right: 0;
-      font-size: 1.1rem;
-      color: black;
+      color: #333;
+      font-size: 1rem;
+      font-family: inherit;
     }
   }
 `;
@@ -128,6 +138,7 @@ const PrimaryNavUl = styled.ul<{ forceOpen: boolean }>`
   }
 
   @media (max-width: 600px) {
+    padding-left: 0;
     a {
       opacity: 1;
     }
@@ -145,6 +156,13 @@ const SecondaryNavUl = styled.ul<SecondaryNavProps>`
   flex-direction: column;
   align-items: flex-start;
 
+  @media (max-width: 600px) {
+    padding-left: 0;
+    a {
+      opacity: 1;
+    }
+  }
+
   ${(props) =>
     props.alwaysVisible &&
     `
@@ -158,40 +176,51 @@ const SecondaryNavUl = styled.ul<SecondaryNavProps>`
 `;
 
 interface LayoutProps {
+  seoProps?: SeoProps;
   secondaryNavProps?: SecondaryNavProps;
+  forceNavOpen?: boolean;
 }
 const Layout: React.FC<LayoutProps> = (props) => {
-  const { children, secondaryNavProps } = props;
-  const [navOpen, setNavOpen] = useState(false);
+  const { children, secondaryNavProps, seoProps, forceNavOpen = false } = props;
+  const [navOpen, setNavOpen] = useState(forceNavOpen);
+
+  useEffect(() => {
+    setNavOpen(forceNavOpen);
+  }, [forceNavOpen]);
 
   const onNavToggle = useCallback(() => {
     setNavOpen(!navOpen);
   }, [navOpen]);
 
+  const isMobile = useIsMobile();
+
   return (
     <Fragment>
       <GlobalStyle />
-      <LeftPanel isOpen={navOpen}>
-        <PrimaryNavUl forceOpen={navOpen}>
-          {primaryNavLinks.map((props, i) => (
-            <li key={`nav-${i}`}>
-              <NavLink {...props} activeStyle={{ opacity: 1 }} />
-            </li>
-          ))}
-        </PrimaryNavUl>
-        {secondaryNavProps && (
-          <SecondaryNavUl {...secondaryNavProps}>
-            {works.map(({ title, slug }) => (
-              <li key={`nav-${slug}`}>
-                <NavLink to={`/work/${slug}`} activeStyle={{ opacity: 1 }}>
-                  {title[0]}
-                </NavLink>
+      <Seo {...seoProps} />
+      <FocusOn enabled={isMobile && navOpen}>
+        <LeftPanel isOpen={navOpen}>
+          <PrimaryNavUl forceOpen={navOpen}>
+            {primaryNavLinks.map((props, i) => (
+              <li key={`nav-${i}`}>
+                <NavLink {...props} activeStyle={{ opacity: 1 }} />
               </li>
             ))}
-          </SecondaryNavUl>
-        )}
-      </LeftPanel>
-      <NavToggle onClick={onNavToggle}>menu</NavToggle>
+          </PrimaryNavUl>
+          {secondaryNavProps && (
+            <SecondaryNavUl {...secondaryNavProps}>
+              {works.map(({ title, slug }) => (
+                <li key={`nav-${slug}`}>
+                  <NavLink to={`/work/${slug}`} activeStyle={{ opacity: 1 }}>
+                    {title[0]}
+                  </NavLink>
+                </li>
+              ))}
+            </SecondaryNavUl>
+          )}
+        </LeftPanel>
+        <NavToggle aria-label="Toggle menu" onClick={onNavToggle} />
+      </FocusOn>
       <Main>{children}</Main>
     </Fragment>
   );

@@ -22,7 +22,14 @@ const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
   const [firstImage, ...otherImages] = images;
 
   return (
-    <Layout secondaryNavProps={{ alwaysVisible: false }}>
+    <Layout
+      seoProps={{
+        title: title.join(", "),
+        description: text[0],
+        image: firstImage?.node.childImageSharp?.fixed?.src,
+      }}
+      secondaryNavProps={{ alwaysVisible: false }}
+    >
       <Container>
         {firstImage && <SafeImage alt="Mansion House" node={firstImage.node} />}
         <WorkText>

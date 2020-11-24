@@ -8,11 +8,10 @@ module.exports = {
   /* Your site config here */
   siteMetadata: {
     title: `Design Research Office`,
-    author: `mantagen`,
+    author: `Valis Loizides`,
     description: `Valis Loizides, Design Research Office, London`,
-    siteUrl: `http://designresearchoffice.co.uk`,
+    baseUrl: `http://designresearchoffice.co.uk`,
     social: {
-      twitter: `kylemathews`,
     },
   },
   plugins: [

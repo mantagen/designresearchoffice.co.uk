@@ -1,4 +1,4 @@
-import { FluidObject } from "gatsby-image";
+import { FixedObject, FluidObject } from "gatsby-image";
 
 export type ImageData = {
   node: {
@@ -6,6 +6,7 @@ export type ImageData = {
     name: string;
     childImageSharp: {
       fluid: FluidObject | FluidObject[];
+      fixed?: FixedObject;
     } | null;
   };
 };
