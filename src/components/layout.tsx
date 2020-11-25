@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link, GatsbyLinkProps } from "gatsby";
 import "fontsource-roboto";
 import { FocusOn } from "react-focus-on";
@@ -7,7 +7,21 @@ import { FocusOn } from "react-focus-on";
 import GlobalStyle from "./global-style";
 import works from "../works.json";
 import Seo, { SeoProps } from "./seo";
-import useIsMobile from "../hooks/useIsMobile";
+import getIsMobile from "../helpers/getIsMobile";
+
+const leftPanelWidth = "320px";
+
+const mainPaddingHorizontal = "2rem";
+
+const sitePaddingVertical = css`
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+  @media (max-width: 600px) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+`;
 
 type NavLinkProps = Omit<GatsbyLinkProps<undefined>, "ref">;
 const primaryNavLinks: NavLinkProps[] = [
@@ -37,13 +51,15 @@ const primaryNavLinks: NavLinkProps[] = [
 ];
 
 const Main = styled.main`
-  margin: 32px 50px 0 325px;
+  padding-right: 2rem;
+  padding-left: ${leftPanelWidth};
   max-width: 1000px;
 
   @media (max-width: 600px) {
-    margin: 3rem 1rem;
-    max-width: auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
   }
+  ${sitePaddingVertical}
 `;
 
 const NavLink = styled(Link)`
@@ -64,6 +80,7 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   z-index: 2;
   display: flex;
   flex-direction: column;
+  width: ${leftPanelWidth};
 
   @media (max-width: 600px) {
     display: none;
@@ -77,16 +94,17 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
       right: 0;
       bottom: 0;
       right: 0;
+      width: 100%;
       left: 0;
       z-index: 9;
       background-color: white;
-      padding: 1rem;
-      padding-bottom: 3rem;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       `}
     }
   }
+
+  ${sitePaddingVertical}
 `;
 
 const NavToggle = styled.button`
@@ -124,10 +142,9 @@ const NavToggle = styled.button`
 `;
 
 const PrimaryNavUl = styled.ul<{ forceOpen: boolean }>`
-  padding-top: 32px;
-  padding-left: 38px;
-  padding-right: 38px;
-  padding-bottom: 34px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -138,7 +155,8 @@ const PrimaryNavUl = styled.ul<{ forceOpen: boolean }>`
   }
 
   @media (max-width: 600px) {
-    padding-left: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
     a {
       opacity: 1;
     }
@@ -149,15 +167,18 @@ interface SecondaryNavProps {
   alwaysVisible: boolean;
 }
 const SecondaryNavUl = styled.ul<SecondaryNavProps>`
-  padding-left: 38px;
-  padding-right: 38px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+
   flex: 100;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
   @media (max-width: 600px) {
-    padding-left: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
     a {
       opacity: 1;
     }
@@ -184,15 +205,21 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const { children, secondaryNavProps, seoProps, forceNavOpen = false } = props;
   const [navOpen, setNavOpen] = useState(forceNavOpen);
 
+  const isMobile = getIsMobile();
+
   useEffect(() => {
     setNavOpen(forceNavOpen);
   }, [forceNavOpen]);
 
+  useEffect(() => {
+    if (!isMobile) {
+      setNavOpen(false);
+    }
+  }, [isMobile]);
+
   const onNavToggle = useCallback(() => {
     setNavOpen(!navOpen);
   }, [navOpen]);
-
-  const isMobile = useIsMobile();
 
   return (
     <Fragment>
