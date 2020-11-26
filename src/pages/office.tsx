@@ -3,6 +3,12 @@ import { PageProps } from "gatsby";
 
 import Layout from "../components/layout";
 import TextPage from "../components/text-page";
+import styled from "styled-components";
+import { colors } from "../theme";
+
+const SmallPrint = styled.div`
+  color: ${colors.lightGrey};
+`;
 
 const Office: React.FC<PageProps> = (props) => {
   return (
@@ -42,30 +48,27 @@ const Office: React.FC<PageProps> = (props) => {
         <p>
           <a href="mailto:d-r-o@d-r-o.net">d-r-o@d-r-o.net</a>
         </p>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <p>
-          © DRO {new Date().getFullYear()}
-          <br />
-          All rights reserved
-          <br />
-          No material contained within this website may be reproduced,
-          distributed, modified, transmitted, reused or adapted without the
-          prior written permission of Valis Loizides – Design Research Office.
-        </p>
-        <p>
-          designresearchoffice.co.uk includes links to external websites.
-          <br />
-          Valis Loizides is not responsible for the content of these internet
-          sites.
-        </p>
-        <br />
-        <p>instagram.com/valisloizides</p>
+        <SmallPrint>
+          <p>
+            © Design Research Office {new Date().getFullYear()}
+            <br />
+            All rights reserved
+            <br />
+            No material contained within this website may be reproduced,
+            distributed, modified, transmitted, reused or adapted without the
+            prior written permission of Valis Loizides – Design Research Office.
+          </p>
+          <p>
+            designresearchoffice.co.uk includes links to external websites.
+            <br />
+            Valis Loizides is not responsible for the content of these internet
+            sites.
+          </p>
+          {/* TODO: put this in the site metadata file */}
+          <a href="https://instagram.com/valisloizides" target="_blank">
+            instagram.com/valisloizides
+          </a>
+        </SmallPrint>
       </TextPage>
     </Layout>
   );

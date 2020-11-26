@@ -6,7 +6,7 @@ html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 120%;
+  font-size: 140%;
 }
 *,
 *:before,
@@ -41,8 +41,14 @@ a {
 a.active {
   text-decoration: underline;
 }
+button {
+  &:hover {
+    cursor: pointer;
+  }
+
+}
 img {
-  max-width: 100%; /*this should be max-width, adjust jpgs accordingly*/
+  max-width: 100%;
 }
 ul {
   list-style-type: none;

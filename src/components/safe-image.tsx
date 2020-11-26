@@ -1,6 +1,7 @@
 import React from "react";
 import Img, { FluidObject } from "gatsby-image";
 import ImageWrapper from "./image-wrapper";
+import styled from "styled-components";
 
 export type ImageNode = {
   id: string;
@@ -13,6 +14,15 @@ type SafeImageProps = {
   node: ImageNode;
   alt: string;
 };
+
+const TemporarilyRemoveBorders = styled.div`
+  overflow: hideden;
+
+  img {
+    transform: scale(1.02);
+  }
+`;
+
 const SafeImage: React.FC<SafeImageProps> = (props) => {
   const { alt, node } = props;
   const { name, childImageSharp } = node;
@@ -24,7 +34,13 @@ const SafeImage: React.FC<SafeImageProps> = (props) => {
 
   return (
     <ImageWrapper>
-      <Img fluid={childImageSharp.fluid} backgroundColor={"#f2f2f2"} alt={alt} />
+      <TemporarilyRemoveBorders>
+        <Img
+          fluid={childImageSharp.fluid}
+          backgroundColor={"#f2f2f2"}
+          alt={alt}
+        />
+      </TemporarilyRemoveBorders>
     </ImageWrapper>
   );
 };

@@ -4,6 +4,11 @@ import Img from "gatsby-image";
 import { graphql, useStaticQuery } from "gatsby";
 
 import { ImageData } from "../types/image-data";
+import styled from "styled-components";
+import RightArrow from "./right-arrow";
+import { colors } from "../theme";
+import IconWrapper from "./icon-wrapper";
+import IconButton from "./icon-button";
 
 const viewportCss: CSSProperties = {
   overflow: "hidden",
@@ -15,6 +20,23 @@ const slideCss: CSSProperties = {
   position: "relative",
   minWidth: "100%",
 };
+
+const CarouselRoot = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+`;
+
+const RightArrowWrapper = styled(IconButton)`
+  margin-left: auto;
+  margin-top: 1rem;
+  color: ${colors.midGrey};
+
+  &:hover {
+    color: ${colors.lightGrey};
+  }
+`;
 
 const Carousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, speed: 5 });
@@ -74,23 +96,28 @@ const Carousel = () => {
   }, [onKeyDown]);
 
   return (
-    <div onClick={onClick} style={viewportCss} ref={emblaRef}>
-      <div style={containerCss}>
-        {data.allFile.edges.map(
-          (edge) =>
-            edge.node.childImageSharp && (
-              <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
-                <Img
-                  fluid={edge.node.childImageSharp.fluid}
-                  alt={edge.node.name}
-                  backgroundColor={"#f2f2f2"}
-                  loading="eager"
-                />
-              </div>
-            )
-        )}
+    <CarouselRoot>
+      <div onClick={onClick} style={viewportCss} ref={emblaRef}>
+        <div style={containerCss}>
+          {data.allFile.edges.map(
+            (edge) =>
+              edge.node.childImageSharp && (
+                <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
+                  <Img
+                    fluid={edge.node.childImageSharp.fluid}
+                    alt={edge.node.name}
+                    backgroundColor={"#f2f2f2"}
+                    loading="eager"
+                  />
+                </div>
+              )
+          )}
+        </div>
       </div>
-    </div>
+      <RightArrowWrapper onClick={onClick}>
+        <RightArrow />
+      </RightArrowWrapper>
+    </CarouselRoot>
   );
 };
 

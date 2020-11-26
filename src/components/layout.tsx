@@ -8,18 +8,30 @@ import GlobalStyle from "./global-style";
 import works from "../works.json";
 import Seo, { SeoProps } from "./seo";
 import getIsMobile from "../helpers/getIsMobile";
+import {
+  colors,
+  PADDING_HORIZONTAL_DESKTOP,
+  PADDING_HORIZONTAL_MOBILE,
+  PADDING_VERTICAL_DESKTOP,
+  PADDING_VERTICAL_MOBILE,
+} from "../theme";
+import MenuButton from "./menu-button";
+import IconButton from "./icon-button";
 
-const leftPanelWidth = "320px";
+const leftPanelWidth = "490px";
 
-const mainPaddingHorizontal = "2rem";
+const mainPaddingHorizontalMobile = css`
+  padding-right: ${PADDING_HORIZONTAL_MOBILE};
+  padding-left: ${PADDING_HORIZONTAL_MOBILE};
+`;
 
 const sitePaddingVertical = css`
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: ${PADDING_VERTICAL_DESKTOP};
+  padding-bottom: ${PADDING_VERTICAL_DESKTOP};
 
   @media (max-width: 600px) {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: ${PADDING_VERTICAL_MOBILE};
+    padding-bottom: ${PADDING_VERTICAL_MOBILE};
   }
 `;
 
@@ -43,7 +55,6 @@ const primaryNavLinks: NavLinkProps[] = [
     to: "/valis-loizides",
     children: (
       <Fragment>
-        {" "}
         Valis Loizides <span className="spacer">Architect</span>
       </Fragment>
     ),
@@ -51,13 +62,12 @@ const primaryNavLinks: NavLinkProps[] = [
 ];
 
 const Main = styled.main`
-  padding-right: 2rem;
+  padding-right: ${PADDING_HORIZONTAL_DESKTOP};
   padding-left: ${leftPanelWidth};
-  max-width: 1000px;
+  max-width: calc(1110px + ${leftPanelWidth});
 
   @media (max-width: 600px) {
-    padding-right: 1rem;
-    padding-left: 1rem;
+    ${mainPaddingHorizontalMobile}
   }
   ${sitePaddingVertical}
 `;
@@ -68,7 +78,7 @@ const NavLink = styled(Link)`
   text-transform: capitalize;
 
   &:hover {
-    color: #cecece;
+    color: ${colors.lightGrey};
   }
 `;
 
@@ -81,6 +91,12 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   display: flex;
   flex-direction: column;
   width: ${leftPanelWidth};
+
+  // &:focus-within {
+  //   a {
+  //     opacity: 1;
+  //   }
+  // }
 
   @media (max-width: 600px) {
     display: none;
@@ -107,43 +123,31 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   ${sitePaddingVertical}
 `;
 
-const NavToggle = styled.button`
+const NavToggle = styled(IconButton)`
   display: none;
 
   @media (max-width: 600px) {
     display: block;
     cursor: pointer;
     position: fixed;
-    top: 0.5rem;
-    right: 0.5rem;
-    height: 2rem;
-    width: 2rem;
-    padding: 0.5rem;
+    top: 1rem;
+    right: ${PADDING_HORIZONTAL_MOBILE};
     z-index: 10;
-    color: transparent;
-    background: transparent;
-    border: none;
+    color: ${colors.midGrey};
 
-    &::after {
-      color: black;
-      content: "☰";
-      display: block;
-      position: absolute;
-      width: 1rem;
-      height: 1rem;
-      margin: 0.5rem;
-      top: 0;
-      right: 0;
-      color: #333;
-      font-size: 1rem;
-      font-family: inherit;
+    &:active {
+      outline: none;
+    }
+
+    &:hover {
+      color: ${colors.lightGrey};
     }
   }
 `;
 
-const PrimaryNavUl = styled.ul<{ forceOpen: boolean }>`
-  padding-left: 2rem;
-  padding-right: 2rem;
+const PrimaryNavUl = styled.ul<{ alwaysVisible: boolean }>`
+  padding-left: ${PADDING_HORIZONTAL_DESKTOP};
+  padding-right: ${PADDING_HORIZONTAL_DESKTOP};
   padding-bottom: 2rem;
   flex: 1;
   display: flex;
@@ -154,9 +158,16 @@ const PrimaryNavUl = styled.ul<{ forceOpen: boolean }>`
     opacity: 1;
   }
 
+  ${(props) =>
+    props.alwaysVisible &&
+    `
+    a {
+      opacity: 1;
+    }
+  `}
+
   @media (max-width: 600px) {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    ${mainPaddingHorizontalMobile}
     a {
       opacity: 1;
     }
@@ -169,7 +180,6 @@ interface SecondaryNavProps {
 const SecondaryNavUl = styled.ul<SecondaryNavProps>`
   padding-left: 2rem;
   padding-right: 2rem;
-  padding-bottom: 2rem;
 
   flex: 100;
   display: flex;
@@ -177,8 +187,7 @@ const SecondaryNavUl = styled.ul<SecondaryNavProps>`
   align-items: flex-start;
 
   @media (max-width: 600px) {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    ${mainPaddingHorizontalMobile}
     a {
       opacity: 1;
     }
@@ -204,6 +213,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = (props) => {
   const { children, secondaryNavProps, seoProps, forceNavOpen = false } = props;
   const [navOpen, setNavOpen] = useState(forceNavOpen);
+  const [menuHasFocus,setMenuHasFocus]= useState(false)
 
   const isMobile = getIsMobile();
 
@@ -221,24 +231,42 @@ const Layout: React.FC<LayoutProps> = (props) => {
     setNavOpen(!navOpen);
   }, [navOpen]);
 
+  const navLinkOnFocus = useCallback(() => {
+    setMenuHasFocus(true);
+  }, []);
+  const navLinkOnBlur = useCallback(() => {
+    setMenuHasFocus(false);
+  }, []);
+
   return (
     <Fragment>
       <GlobalStyle />
       <Seo {...seoProps} />
       <FocusOn enabled={isMobile && navOpen}>
         <LeftPanel isOpen={navOpen}>
-          <PrimaryNavUl forceOpen={navOpen}>
+          <PrimaryNavUl alwaysVisible={menuHasFocus}>
             {primaryNavLinks.map((props, i) => (
               <li key={`nav-${i}`}>
-                <NavLink {...props} activeStyle={{ opacity: 1 }} />
+                <NavLink
+                  {...props}
+                  
+                  activeStyle={{ opacity: 1 }}
+                  onFocus={navLinkOnFocus}
+                  onBlur={navLinkOnBlur}
+                />
               </li>
             ))}
           </PrimaryNavUl>
           {secondaryNavProps && (
-            <SecondaryNavUl {...secondaryNavProps}>
+            <SecondaryNavUl {...secondaryNavProps} alwaysVisible={menuHasFocus}>
               {works.map(({ title, slug }) => (
                 <li key={`nav-${slug}`}>
-                  <NavLink to={`/work/${slug}`} activeStyle={{ opacity: 1 }}>
+                  <NavLink
+                    to={`/work/${slug}`}
+                    activeStyle={{ opacity: 1 }}
+                    onFocus={navLinkOnFocus}
+                    onBlur={navLinkOnBlur}
+                  >
                     {title[0]}
                   </NavLink>
                 </li>
@@ -246,7 +274,9 @@ const Layout: React.FC<LayoutProps> = (props) => {
             </SecondaryNavUl>
           )}
         </LeftPanel>
-        <NavToggle aria-label="Toggle menu" onClick={onNavToggle} />
+        <NavToggle aria-label="Toggle menu" onClick={onNavToggle}>
+          <MenuButton />
+        </NavToggle>
       </FocusOn>
       <Main>{children}</Main>
     </Fragment>

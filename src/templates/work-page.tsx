@@ -1,14 +1,16 @@
 import React, { Fragment } from "react";
 import { PageProps } from "gatsby";
+import styled from "styled-components";
 
 import Layout from "../components/layout";
 import WorkText from "../components/work-text";
 import SafeImage from "../components/safe-image";
 import { ImageData } from "../types/image-data";
-import styled from "styled-components";
+import { textWidth } from "../theme";
 
 const Container = styled.div`
-  max-width: 632px;
+  max-width: ${textWidth};
+  margin-top: 155px;
 `;
 interface WorkPageProps {
   slug: string;
