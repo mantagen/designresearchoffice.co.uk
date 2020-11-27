@@ -213,7 +213,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = (props) => {
   const { children, secondaryNavProps, seoProps, forceNavOpen = false } = props;
   const [navOpen, setNavOpen] = useState(forceNavOpen);
-  const [menuHasFocus,setMenuHasFocus]= useState(false)
+  const [menuHasFocus, setMenuHasFocus] = useState(forceNavOpen);
 
   const isMobile = getIsMobile();
 
@@ -238,6 +238,8 @@ const Layout: React.FC<LayoutProps> = (props) => {
     setMenuHasFocus(false);
   }, []);
 
+  const secondaryNavAlwaysVisible = Boolean(menuHasFocus || navOpen);
+
   return (
     <Fragment>
       <GlobalStyle />
@@ -246,10 +248,9 @@ const Layout: React.FC<LayoutProps> = (props) => {
         <LeftPanel isOpen={navOpen}>
           <PrimaryNavUl alwaysVisible={menuHasFocus}>
             {primaryNavLinks.map((props, i) => (
-              <li key={`nav-${i}`}>
+              <li key={`nav-primary-${i}`}>
                 <NavLink
                   {...props}
-                  
                   activeStyle={{ opacity: 1 }}
                   onFocus={navLinkOnFocus}
                   onBlur={navLinkOnBlur}
@@ -258,9 +259,12 @@ const Layout: React.FC<LayoutProps> = (props) => {
             ))}
           </PrimaryNavUl>
           {secondaryNavProps && (
-            <SecondaryNavUl {...secondaryNavProps} alwaysVisible={menuHasFocus}>
+            <SecondaryNavUl
+              {...secondaryNavProps}
+              alwaysVisible={secondaryNavAlwaysVisible}
+            >
               {works.map(({ title, slug }) => (
-                <li key={`nav-${slug}`}>
+                <li key={`nav-secondary-${slug}`}>
                   <NavLink
                     to={`/work/${slug}`}
                     activeStyle={{ opacity: 1 }}

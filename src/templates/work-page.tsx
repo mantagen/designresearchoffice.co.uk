@@ -37,20 +37,20 @@ const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
         <WorkText>
           <h2>
             {title.map((part, i) => (
-              <Fragment>
+              <Fragment key={`work-page__title-fragment__${i}`}>
                 {part}
                 <br />
               </Fragment>
             ))}
           </h2>
           <br />
-          {text.map((part) => (
-            <p>{part}</p>
+          {text.map((part, i) => (
+            <p key={`work-page__text-paragraph__${i}`}>{part}</p>
           ))}
         </WorkText>
         {otherImages.map((image, i) => (
           <SafeImage
-            key={`work-image-${image.node.id}`}
+            key={`work-page__image__${i}`}
             alt="Mansion House"
             node={image.node}
           />
