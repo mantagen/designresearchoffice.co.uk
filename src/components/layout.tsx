@@ -82,7 +82,7 @@ const NavLink = styled(Link)`
   }
 `;
 
-const LeftPanel = styled.nav<{ isOpen?: boolean }>`
+const LeftPanel = styled.header<{ isOpen?: boolean }>`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -121,6 +121,12 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   }
 
   ${sitePaddingVertical}
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  flex: auto;
 `;
 
 const NavToggle = styled(IconButton)`
@@ -246,37 +252,39 @@ const Layout: React.FC<LayoutProps> = (props) => {
       <Seo {...seoProps} />
       <FocusOn enabled={isMobile && navOpen}>
         <LeftPanel isOpen={navOpen}>
-          <PrimaryNavUl alwaysVisible={menuHasFocus}>
-            {primaryNavLinks.map((props, i) => (
-              <li key={`nav-primary-${i}`}>
-                <NavLink
-                  {...props}
-                  activeStyle={{ opacity: 1 }}
-                  onFocus={navLinkOnFocus}
-                  onBlur={navLinkOnBlur}
-                />
-              </li>
-            ))}
-          </PrimaryNavUl>
-          {secondaryNavProps && (
-            <SecondaryNavUl
-              {...secondaryNavProps}
-              alwaysVisible={secondaryNavAlwaysVisible}
-            >
-              {works.map(({ title, slug }) => (
-                <li key={`nav-secondary-${slug}`}>
+          <Nav>
+            <PrimaryNavUl alwaysVisible={menuHasFocus}>
+              {primaryNavLinks.map((props, i) => (
+                <li key={`nav-primary-${i}`}>
                   <NavLink
-                    to={`/work/${slug}`}
+                    {...props}
                     activeStyle={{ opacity: 1 }}
                     onFocus={navLinkOnFocus}
                     onBlur={navLinkOnBlur}
-                  >
-                    {title[0]}
-                  </NavLink>
+                  />
                 </li>
               ))}
-            </SecondaryNavUl>
-          )}
+            </PrimaryNavUl>
+            {secondaryNavProps && (
+              <SecondaryNavUl
+                {...secondaryNavProps}
+                alwaysVisible={secondaryNavAlwaysVisible}
+              >
+                {works.map(({ title, slug }) => (
+                  <li key={`nav-secondary-${slug}`}>
+                    <NavLink
+                      to={`/work/${slug}`}
+                      activeStyle={{ opacity: 1 }}
+                      onFocus={navLinkOnFocus}
+                      onBlur={navLinkOnBlur}
+                    >
+                      {title[0]}
+                    </NavLink>
+                  </li>
+                ))}
+              </SecondaryNavUl>
+            )}
+          </Nav>
         </LeftPanel>
         <NavToggle aria-label="Toggle menu" onClick={onNavToggle}>
           <MenuButton />
