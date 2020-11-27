@@ -7,6 +7,7 @@ html {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 140%;
+  -webkit-tap-highlight-color: transparent;
 }
 *,
 *:before,
