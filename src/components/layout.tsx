@@ -92,11 +92,11 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   flex-direction: column;
   width: ${leftPanelWidth};
 
-  // &:focus-within {
-  //   a {
-  //     opacity: 1;
-  //   }
-  // }
+  &:focus-within {
+    a {
+      opacity: 1;
+    }
+  }
 
   @media (max-width: 600px) {
     display: none;
