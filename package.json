@@ -6,6 +6,7 @@
   "license": "0BSD",
   "scripts": {
     "build": "gatsby clean && gatsby build",
+    "deploy": "npm run build && node ./scripts/push.js",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "npm run develop",
@@ -25,6 +26,7 @@
     "@types/react-helmet": "^6.1.0",
     "@types/styled-components": "^5.1.4",
     "babel-plugin-styled-components": "^1.11.1",
+    "basic-ftp": "^4.6.3",
     "embla-carousel": "^4.1.0",
     "fontsource-roboto": "^3.0.3",
     "gatsby-image": "^2.6.0",
