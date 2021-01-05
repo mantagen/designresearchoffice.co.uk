@@ -8,6 +8,9 @@ export type ImageNode = {
   name: string;
   childImageSharp: {
     fluid: FluidObject | FluidObject[];
+    fixed?: {
+      src: string;
+    };
   } | null;
 };
 type SafeImageProps = {

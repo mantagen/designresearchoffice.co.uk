@@ -1,5 +1,5 @@
 import React from "react";
-import { PageProps } from "gatsby";
+import { Link, PageProps } from "gatsby";
 
 import Layout from "../components/layout";
 import TextPage from "../components/text-page";
@@ -10,9 +10,24 @@ const SmallPrint = styled.div`
   color: ${colors.lightGrey};
 `;
 
-const Office: React.FC<PageProps> = (props) => {
+const Office: React.FC<PageProps> = () => {
   return (
-    <Layout>
+    <Layout
+      seoProps={{
+        title: "Office",
+        description: `The practice was established in 2006 to provide services and solutions
+          in architecture, design, urbanism and landscape. It operates within
+          the traditional boundaries of architecture and urbanism. Each
+          project draws equally from research and design, initiating conceptual
+          studies to complex technical implementations. The Design Research
+          Office is dedicated to realizing architecture, and focuses its ongoing
+          research around creating a singular architectural language that
+          springs from multiple collaborative processes.`
+          .split("\n")
+          .map((a) => a.trim())
+          .join(" "),
+      }}
+    >
       <TextPage>
         <h2>Design Research Office</h2>
         <p>
@@ -46,8 +61,11 @@ const Office: React.FC<PageProps> = (props) => {
         </p>
         <h2>Contact</h2>
         <p>
-          <a href="mailto:d-r-o@d-r-o.net">d-r-o@d-r-o.net</a>
+          <a href="mailto:email@designresearchoffice.com">
+            email@designresearchoffice.com
+          </a>
         </p>
+        <br />
         <SmallPrint>
           <p>
             © Design Research Office {new Date().getFullYear()}
@@ -59,7 +77,8 @@ const Office: React.FC<PageProps> = (props) => {
             prior written permission of Valis Loizides – Design Research Office.
           </p>
           <p>
-            designresearchoffice.co.uk includes links to external websites.
+            <Link to="/">designresearchoffice.co.uk</Link> includes links to
+            external websites.
             <br />
             Valis Loizides is not responsible for the content of these internet
             sites.

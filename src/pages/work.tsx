@@ -4,7 +4,11 @@ import Layout from "../components/layout";
 
 const Work: React.FC<PageProps> = () => {
   return (
-    <Layout forceNavOpen secondaryNavProps={{ alwaysVisible: true }}></Layout>
+    <Layout
+      forceNavOpen
+      secondaryNavProps={{ alwaysVisible: true }}
+      seoProps={{ title: "Works" }}
+    ></Layout>
   );
 };
 

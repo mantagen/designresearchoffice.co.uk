@@ -4,9 +4,7 @@ import Layout from "../components/layout";
 
 const Home: React.FC<PageProps> = (props) => {
   return (
-    <Layout>
-      404, page not found.
-    </Layout>
+    <Layout seoProps={{ title: "Not Found" }}>404, page not found.</Layout>
   );
 };
 

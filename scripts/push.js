@@ -1,18 +1,23 @@
-const path = require("path")
+require("dotenv").config();
+const path = require("path");
 const ftp = require("basic-ftp");
-
 (async function push() {
   const client = new ftp.Client();
-  client.ftp.verbose = true;
+  // client.ftp.verbose = true;
   try {
     await client.access({
-      host: "ftp.ibscy.com",
-      user: "dro",
-      password: "eBPyfU",
+      host: process.env.FTP_HOST,
+      user: process.env.FTP_USER,
+      password: process.env.FTP_PASSWORD,
       secure: false,
     });
 
-    await client.uploadFromDir(path.join(__dirname, "../public"));
+    const remoteDirPath = "/dro-static-site";
+    // await client.removeDir(remoteDirPath);
+    await client.uploadFromDir(
+      path.join(__dirname, "../public"),
+      remoteDirPath
+    );
 
     console.log("Done.");
   } catch (err) {

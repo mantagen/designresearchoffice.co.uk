@@ -18,7 +18,7 @@ import {
 import MenuButton from "./menu-button";
 import IconButton from "./icon-button";
 
-const leftPanelWidth = "490px";
+const leftPanelWidthPx = 490;
 
 const mainPaddingHorizontalMobile = css`
   padding-right: ${PADDING_HORIZONTAL_MOBILE};
@@ -63,8 +63,8 @@ const primaryNavLinks: NavLinkProps[] = [
 
 const Main = styled.main`
   padding-right: ${PADDING_HORIZONTAL_DESKTOP};
-  padding-left: ${leftPanelWidth};
-  max-width: calc(1110px + ${leftPanelWidth});
+  padding-left: ${leftPanelWidthPx}px;
+  max-width: ${1110 + leftPanelWidthPx}px;
 
   @media (max-width: 600px) {
     ${mainPaddingHorizontalMobile}
@@ -90,7 +90,7 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
   z-index: 2;
   display: flex;
   flex-direction: column;
-  width: ${leftPanelWidth};
+  width: ${leftPanelWidthPx};
 
   &:focus-within {
     a {

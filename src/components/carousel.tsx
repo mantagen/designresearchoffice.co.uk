@@ -7,7 +7,6 @@ import { ImageData } from "../types/image-data";
 import styled from "styled-components";
 import RightArrow from "./right-arrow";
 import { colors } from "../theme";
-import IconWrapper from "./icon-wrapper";
 import IconButton from "./icon-button";
 
 const viewportCss: CSSProperties = {
@@ -44,7 +43,7 @@ const Carousel = () => {
   const data: { allFile: { edges: ImageData[] } } = useStaticQuery(graphql`
     query {
       allFile(
-        sort: { fields: name, order: DESC }
+        sort: { fields: name, order: ASC }
         filter: { relativeDirectory: { eq: "images/home-carousel" } }
       ) {
         edges {
@@ -52,8 +51,13 @@ const Carousel = () => {
             id
             name
             childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid_withWebp_noBase64
+              fluid(maxWidth: 1200, quality: 70) {
+                aspectRatio
+                src
+                srcSet
+                srcWebp
+                srcSetWebp
+                sizes
               }
             }
           }

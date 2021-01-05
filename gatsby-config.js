@@ -10,9 +10,7 @@ module.exports = {
     title: `Design Research Office`,
     author: `Valis Loizides`,
     description: `Valis Loizides, Design Research Office, London`,
-    baseUrl: `http://designresearchoffice.co.uk`,
-    social: {
-    },
+    siteUrl: `http://designresearchoffice.co.uk`,
   },
   plugins: [
     {
@@ -33,5 +31,13 @@ module.exports = {
         path: `${__dirname}/src/`,
       },
     },
+    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: ["G-13P231HXJZ"],
+      },
+    },
+    `gatsby-plugin-robots-txt`
   ],
 };

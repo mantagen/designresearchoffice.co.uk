@@ -12,13 +12,13 @@ export type SeoProps = {
 const Seo: React.FC<SeoProps> = (props) => {
   const { pathname } = useLocation();
   const {
-    site,
+    site: { siteMetadata },
   }: {
     site: {
       siteMetadata: {
         title: string;
         description: string;
-        baseUrl: string;
+        siteUrl: string;
         author: string;
       };
     };
@@ -28,20 +28,20 @@ const Seo: React.FC<SeoProps> = (props) => {
         siteMetadata {
           title
           description
-          baseUrl
+          siteUrl
           author
         }
       }
     }
   `);
-  const defaults = site.siteMetadata;
+  const defaults = siteMetadata;
 
-  if (defaults.baseUrl === "" && typeof window !== "undefined") {
-    defaults.baseUrl = window.location.origin;
+  if (defaults.siteUrl === "" && typeof window !== "undefined") {
+    defaults.siteUrl = window.location.origin;
   }
 
-  if (defaults.baseUrl === "") {
-    console.error("Please set a baseUrl in your site metadata!");
+  if (defaults.siteUrl === "") {
+    console.error("Please set a siteUrl in your site metadata!");
     return null;
   }
 
@@ -50,16 +50,13 @@ const Seo: React.FC<SeoProps> = (props) => {
     ? `${props.title} - ${defaults.title}`
     : defaults.title;
   const description = props.description || defaults.description;
-  const url = new URL(pathname, defaults.baseUrl).href;
+  const url = new URL(pathname, defaults.siteUrl).href;
   const image = props.image
-    ? new URL(props.image, defaults.baseUrl).href
+    ? new URL(props.image, defaults.siteUrl).href
     : false;
 
   return (
-    <Helmet
-      defaultTitle={defaults.title}
-      titleTemplate={defaults.titleTemplate}
-    >
+    <Helmet defaultTitle={defaults.title}>
       <title>{props.title}</title>
       <link rel="canonical" href={url} />
       <meta name="description" content={description} />

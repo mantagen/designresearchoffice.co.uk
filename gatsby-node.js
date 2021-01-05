@@ -18,7 +18,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       const result = await graphql(`
         query {
           allFile(
-            sort: { fields: name, order: DESC }
+            sort: { fields: name, order: ASC }
             filter: { relativeDirectory: { eq: "images/work/${slug}" } }
           ) {
             edges {
@@ -26,10 +26,12 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 id
                 name
                 childImageSharp {
-                  fluid {
+                  fluid(quality: 70) {
                     aspectRatio
                     src
                     srcSet
+                    srcWebp
+                    srcSetWebp
                     sizes
                   }
                   fixed(width: 960) {
