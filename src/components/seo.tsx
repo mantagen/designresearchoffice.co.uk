@@ -73,6 +73,7 @@ const Seo: React.FC<SeoProps> = (props) => {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       {image && <meta name="twitter:image" content={image} />}
+      <html lang="en" />
     </Helmet>
   );
 };
