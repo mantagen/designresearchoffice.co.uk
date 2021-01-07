@@ -4,7 +4,7 @@ import { Link, GatsbyLinkProps } from "gatsby";
 import "fontsource-roboto";
 import { FocusOn } from "react-focus-on";
 
-import GlobalStyle from "./global-style";
+import GlobalStyle, { MOBILE_BREAK_POINT } from "./global-style";
 import works from "../works.json";
 import Seo, { SeoProps } from "./seo";
 import getIsMobile from "../helpers/getIsMobile";
@@ -29,7 +29,7 @@ const sitePaddingVertical = css`
   padding-top: ${PADDING_VERTICAL_DESKTOP};
   padding-bottom: ${PADDING_VERTICAL_DESKTOP};
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAK_POINT}) {
     padding-top: ${PADDING_VERTICAL_MOBILE};
     padding-bottom: ${PADDING_VERTICAL_MOBILE};
   }
@@ -66,7 +66,7 @@ const Main = styled.main`
   padding-left: ${leftPanelWidthPx}px;
   max-width: ${1110 + leftPanelWidthPx}px;
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAK_POINT}) {
     ${mainPaddingHorizontalMobile}
   }
   ${sitePaddingVertical}
@@ -98,7 +98,7 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAK_POINT}) {
     display: none;
 
     ${(props) =>
@@ -132,7 +132,7 @@ const Nav = styled.nav`
 const NavToggle = styled(IconButton)`
   display: none;
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAK_POINT}) {
     display: block;
     cursor: pointer;
     position: fixed;
@@ -172,7 +172,7 @@ const PrimaryNavUl = styled.ul<{ alwaysVisible: boolean }>`
     }
   `}
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAK_POINT}) {
     ${mainPaddingHorizontalMobile}
     a {
       opacity: 1;
@@ -192,7 +192,7 @@ const SecondaryNavUl = styled.ul<SecondaryNavProps>`
   flex-direction: column;
   align-items: flex-start;
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAK_POINT}) {
     ${mainPaddingHorizontalMobile}
     a {
       opacity: 1;
