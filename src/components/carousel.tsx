@@ -94,7 +94,7 @@ const Carousel = () => {
   }, [emblaApi]);
 
   useEffect(() => {
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKeyDown, { passive: true });
 
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown]);
