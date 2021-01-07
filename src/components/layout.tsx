@@ -15,7 +15,7 @@ import {
   PADDING_VERTICAL_DESKTOP,
   PADDING_VERTICAL_MOBILE,
 } from "../theme";
-import MenuButton from "./menu-button";
+import MenuIcon from "./menu-icon";
 import IconButton from "./icon-button";
 
 const leftPanelWidthPx = 490;
@@ -287,7 +287,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
           </Nav>
         </LeftPanel>
         <NavToggle aria-label="Toggle menu" onClick={onNavToggle}>
-          <MenuButton />
+          <MenuIcon />
         </NavToggle>
       </FocusOn>
       <Main>{children}</Main>

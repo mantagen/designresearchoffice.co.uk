@@ -118,7 +118,7 @@ const Carousel = () => {
           )}
         </div>
       </div>
-      <RightArrowWrapper onClick={onClick}>
+      <RightArrowWrapper onClick={onClick} aria-label="Next slide">
         <RightArrow />
       </RightArrowWrapper>
     </CarouselRoot>

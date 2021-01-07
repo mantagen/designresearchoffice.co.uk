@@ -23,13 +23,16 @@ const IconButtonRoot = styled.button`
   }
 `;
 
-const IconButton: React.FC<Omit<
-  HTMLProps<HTMLButtonElement>,
-  "ref" | "type" | "as"
->> = ({ children, ...buttonProps }) => {
+const IconButton: React.FC<
+  Omit<HTMLProps<HTMLButtonElement>, "ref" | "type" | "as"> & {
+    "aria-label": string;
+  }
+> = ({ children, ...buttonProps }) => {
   return (
     <IconButtonRoot {...buttonProps}>
-      <IconWrapper tabIndex={-1}>{children}</IconWrapper>
+      <IconWrapper tabIndex={-1}>
+        <span aria-hidden>{children}</span>
+      </IconWrapper>
     </IconButtonRoot>
   );
 };

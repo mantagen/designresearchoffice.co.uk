@@ -1,6 +1,6 @@
 import React from "react";
 
-const MenuButton: React.FC = () => {
+const MenuIcon: React.FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,4 +26,4 @@ const MenuButton: React.FC = () => {
   );
 };
 
-export default MenuButton;
+export default MenuIcon;

@@ -38,10 +38,6 @@ h6 {
 a {
   color: inherit;
   text-decoration: none;
-
-  &:focus {
-    outline: none;
-  }
 }
 button {
   &:hover {
