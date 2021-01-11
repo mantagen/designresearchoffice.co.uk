@@ -43,7 +43,6 @@ button {
   &:hover {
     cursor: pointer;
   }
-
 }
 img {
   max-width: 100%;
@@ -58,6 +57,7 @@ ul {
 }
 p {
   margin: 0;
+  word-break: break-word;
 }
 `;
 

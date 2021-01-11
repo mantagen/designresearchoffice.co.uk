@@ -72,6 +72,18 @@ const Main = styled.main`
   ${sitePaddingVertical}
 `;
 
+const PrimaryNavLi = styled.li`
+  // TODO: have doing this because otherwise on ios there is a bug where
+  // the first link has a focus outline at certain times.
+  // The bug is introduced by FocusOn
+  @media (hover: none) and (pointer: coarse) {
+    &:first-of-type {
+      a:focus {
+        outline: none;
+      }
+    }
+  }
+`;
 const NavLink = styled(Link)`
   opacity: 0;
   transition: opacity 1.5s ease;
@@ -250,19 +262,19 @@ const Layout: React.FC<LayoutProps> = (props) => {
     <Fragment>
       <GlobalStyle />
       <Seo {...seoProps} />
-      <FocusOn enabled={isMobile && navOpen}>
+      <FocusOn enabled={isMobile && navOpen} autoFocus={false}>
         <LeftPanel isOpen={navOpen}>
           <Nav id="navigation">
             <PrimaryNavUl alwaysVisible={menuHasFocus}>
               {primaryNavLinks.map((props, i) => (
-                <li key={`nav-primary-${i}`}>
+                <PrimaryNavLi key={`nav-primary-${i}`}>
                   <NavLink
                     {...props}
                     activeStyle={{ opacity: 1 }}
                     onFocus={navLinkOnFocus}
                     onBlur={navLinkOnBlur}
                   />
-                </li>
+                </PrimaryNavLi>
               ))}
             </PrimaryNavUl>
             {secondaryNavProps && (
@@ -286,7 +298,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
             )}
           </Nav>
         </LeftPanel>
-        {!forceNavOpen && (
+        {isMobile && !forceNavOpen && (
           <NavToggle
             aria-controls="navigation"
             aria-expanded={navOpen}
