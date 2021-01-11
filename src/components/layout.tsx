@@ -4,10 +4,10 @@ import { Link, GatsbyLinkProps } from "gatsby";
 import "fontsource-roboto";
 import { FocusOn } from "react-focus-on";
 
-import GlobalStyle, { MOBILE_BREAK_POINT } from "./global-style";
+import GlobalStyle from "./global-style";
 import works from "../works.json";
 import Seo, { SeoProps } from "./seo";
-import getIsMobile from "../helpers/getIsMobile";
+import getIsMobile, { MOBILE_BREAK_POINT } from "../helpers/getIsMobile";
 import {
   colors,
   PADDING_HORIZONTAL_DESKTOP,
@@ -252,7 +252,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
       <Seo {...seoProps} />
       <FocusOn enabled={isMobile && navOpen}>
         <LeftPanel isOpen={navOpen}>
-          <Nav>
+          <Nav id="navigation">
             <PrimaryNavUl alwaysVisible={menuHasFocus}>
               {primaryNavLinks.map((props, i) => (
                 <li key={`nav-primary-${i}`}>
@@ -286,9 +286,16 @@ const Layout: React.FC<LayoutProps> = (props) => {
             )}
           </Nav>
         </LeftPanel>
-        <NavToggle aria-label="Toggle menu" onClick={onNavToggle}>
-          <MenuIcon />
-        </NavToggle>
+        {!forceNavOpen && (
+          <NavToggle
+            aria-controls="navigation"
+            aria-expanded={navOpen}
+            aria-label={navOpen ? "Close Menu" : "Open Menu"}
+            onClick={onNavToggle}
+          >
+            <MenuIcon navOpen={navOpen} />
+          </NavToggle>
+        )}
       </FocusOn>
       <Main>{children}</Main>
     </Fragment>

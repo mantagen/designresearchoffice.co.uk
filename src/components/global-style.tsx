@@ -1,8 +1,6 @@
 // globalStyles.js
 import { createGlobalStyle } from "styled-components";
 
-export const MOBILE_BREAK_POINT = "900px";
-
 const GlobalStyle = createGlobalStyle`
 html {
   -webkit-box-sizing: border-box;
