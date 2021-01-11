@@ -1,7 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const IconWrapperRoot = styled.div`
+export const iconWrapperStyles = css`
   height: 2.1rem;
   width: 2.1rem;
   display: flex;
@@ -11,6 +11,9 @@ const IconWrapperRoot = styled.div`
   align-items: center;
   justify-content: center;
   outline: none;
+`;
+const IconWrapperRoot = styled.div`
+  ${iconWrapperStyles}
 `;
 
 const IconWrapper: React.FC = (props) => {

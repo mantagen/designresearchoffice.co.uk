@@ -23,7 +23,6 @@ const slideCss: CSSProperties = {
 const CarouselRoot = styled.div`
   display: flex;
   flex-direction: column;
-
   cursor: pointer;
 `;
 
@@ -108,7 +107,10 @@ const Carousel = () => {
               edge.node.childImageSharp && (
                 <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
                   <Img
-                    fluid={edge.node.childImageSharp.fluid}
+                    fluid={{
+                      ...edge.node.childImageSharp.fluid,
+                      aspectRatio: 1.5,
+                    }}
                     alt={edge.node.name}
                     backgroundColor={"#f2f2f2"}
                     loading="eager"
