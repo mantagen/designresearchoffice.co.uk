@@ -61,8 +61,8 @@ const Office: React.FC<PageProps> = () => {
         </p>
         <h2>Contact</h2>
         <p>
-          <a href="mailto:email@designresearchoffice.com">
-            email@designresearchoffice.com
+          <a href="mailto:email@designresearchoffice.co.uk">
+            email@designresearchoffice.co.uk
           </a>
         </p>
         <br />
