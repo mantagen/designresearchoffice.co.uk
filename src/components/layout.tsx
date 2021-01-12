@@ -17,6 +17,7 @@ import {
 } from "../theme";
 import MenuIcon from "./menu-icon";
 import IconButton from "./icon-button";
+import { useLocation } from "@reach/router";
 
 const leftPanelWidthPx = 490;
 
@@ -235,6 +236,8 @@ const Layout: React.FC<LayoutProps> = (props) => {
 
   const isMobile = useIsMobile();
 
+  const location = useLocation();
+
   useEffect(() => {
     setNavOpen(forceNavOpen);
   }, [forceNavOpen, isMobile]);
@@ -256,11 +259,13 @@ const Layout: React.FC<LayoutProps> = (props) => {
     setMenuHasFocus(false);
   }, []);
 
-  const navLinkOnClick = useCallback(() => {
+  const navLinkOnClick = (to: string) => () => {
     if (!forceNavOpen) {
-      setNavOpen(false);
+      if (to === location.pathname) {
+        setNavOpen(false);
+      }
     }
-  }, [forceNavOpen]);
+  };
 
   const secondaryNavAlwaysVisible = Boolean(menuHasFocus || navOpen);
 
@@ -279,7 +284,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
                     activeStyle={{ opacity: 1 }}
                     onFocus={navLinkOnFocus}
                     onBlur={navLinkOnBlur}
-                    onClick={navLinkOnClick}
+                    onClick={navLinkOnClick(props.to)}
                   />
                 </PrimaryNavLi>
               ))}
@@ -289,19 +294,22 @@ const Layout: React.FC<LayoutProps> = (props) => {
                 {...secondaryNavProps}
                 alwaysVisible={secondaryNavAlwaysVisible}
               >
-                {works.map(({ title, slug }) => (
-                  <li key={`nav-secondary-${slug}`}>
-                    <NavLink
-                      to={`/work/${slug}`}
-                      activeStyle={{ opacity: 1 }}
-                      onFocus={navLinkOnFocus}
-                      onBlur={navLinkOnBlur}
-                      onClick={navLinkOnClick}
-                    >
-                      {title[0]}
-                    </NavLink>
-                  </li>
-                ))}
+                {works.map(({ title, slug }) => {
+                  const to = `/work/${slug}`;
+                  return (
+                    <li key={`nav-secondary-${slug}`}>
+                      <NavLink
+                        to={to}
+                        activeStyle={{ opacity: 1 }}
+                        onFocus={navLinkOnFocus}
+                        onBlur={navLinkOnBlur}
+                        onClick={navLinkOnClick(to)}
+                      >
+                        {title[0]}
+                      </NavLink>
+                    </li>
+                  );
+                })}
               </SecondaryNavUl>
             )}
           </Nav>
