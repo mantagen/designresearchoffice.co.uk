@@ -7,7 +7,7 @@ import { FocusOn } from "react-focus-on";
 import GlobalStyle from "./global-style";
 import works from "../works.json";
 import Seo, { SeoProps } from "./seo";
-import getIsMobile, { MOBILE_BREAK_POINT } from "../helpers/getIsMobile";
+import useIsMobile, { MOBILE_BREAK_POINT } from "../helpers/useIsMobile";
 import {
   colors,
   PADDING_HORIZONTAL_DESKTOP,
@@ -233,11 +233,11 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const [navOpen, setNavOpen] = useState(forceNavOpen);
   const [menuHasFocus, setMenuHasFocus] = useState(forceNavOpen);
 
-  const isMobile = getIsMobile();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setNavOpen(forceNavOpen);
-  }, [forceNavOpen]);
+  }, [forceNavOpen, isMobile]);
 
   useEffect(() => {
     if (!isMobile) {
@@ -256,6 +256,12 @@ const Layout: React.FC<LayoutProps> = (props) => {
     setMenuHasFocus(false);
   }, []);
 
+  const navLinkOnClick = useCallback(() => {
+    if (!forceNavOpen) {
+      setNavOpen(false);
+    }
+  }, [forceNavOpen]);
+
   const secondaryNavAlwaysVisible = Boolean(menuHasFocus || navOpen);
 
   return (
@@ -273,6 +279,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
                     activeStyle={{ opacity: 1 }}
                     onFocus={navLinkOnFocus}
                     onBlur={navLinkOnBlur}
+                    onClick={navLinkOnClick}
                   />
                 </PrimaryNavLi>
               ))}
@@ -289,6 +296,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
                       activeStyle={{ opacity: 1 }}
                       onFocus={navLinkOnFocus}
                       onBlur={navLinkOnBlur}
+                      onClick={navLinkOnClick}
                     >
                       {title[0]}
                     </NavLink>
