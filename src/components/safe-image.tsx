@@ -31,7 +31,7 @@ const SafeImage: React.FC<SafeImageProps> = (props) => {
     <ImageWrapper>
       <Img
         fluid={childImageSharp.fluid}
-        backgroundColor={colors.backgoundGrey}
+        backgroundColor={colors.backgroundGrey}
         alt={alt}
       />
     </ImageWrapper>

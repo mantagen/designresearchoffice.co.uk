@@ -3,7 +3,7 @@ export const colors = {
   midGrey: "#707070",
   darkGrey: "#333",
   white: "#fff",
-  backgoundGrey: "#f2f2f2"
+  backgroundGrey: "#f2f2f2"
 };
 
 export const TEXT_MAX_WIDTH = "750px";
