@@ -112,7 +112,7 @@ const Carousel = () => {
                       aspectRatio: 1.5,
                     }}
                     alt={edge.node.name}
-                    backgroundColor={"#f2f2f2"}
+                    backgroundColor={colors.backgoundGrey}
                     loading="eager"
                   />
                 </div>

@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { textWidth } from "../theme";
+import { TEXT_MAX_WIDTH } from "../theme";
 
 const TextPage = styled.div`
-  max-width: ${textWidth};
+  max-width: ${TEXT_MAX_WIDTH};
 
   p {
     margin-bottom: 1em;

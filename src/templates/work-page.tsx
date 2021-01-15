@@ -6,10 +6,10 @@ import Layout from "../components/layout";
 import WorkText from "../components/work-text";
 import SafeImage from "../components/safe-image";
 import { ImageData } from "../types/image-data";
-import { textWidth } from "../theme";
+import { TEXT_MAX_WIDTH } from "../theme";
 
 const Container = styled.div`
-  max-width: ${textWidth};
+  max-width: ${TEXT_MAX_WIDTH};
   margin-top: 155px;
 `;
 interface WorkPageProps {

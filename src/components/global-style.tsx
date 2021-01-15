@@ -1,5 +1,6 @@
 // globalStyles.js
 import { createGlobalStyle } from "styled-components";
+import { colors } from "../theme";
 
 const GlobalStyle = createGlobalStyle`
 html {
@@ -18,7 +19,7 @@ html {
 }
 body {
   margin: 0;
-  color: #333;
+  color: ${colors.darkGrey};
 }
 html {
   font-family: "Roboto", sans-serif;
@@ -51,9 +52,6 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
-}
-.spacer {
-  margin-left: 6px;
 }
 p {
   margin: 0;

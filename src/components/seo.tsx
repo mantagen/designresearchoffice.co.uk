@@ -22,7 +22,7 @@ const Seo: React.FC<SeoProps> = (props) => {
         author: string;
       };
     };
-  } = useStaticQuery(graphql`
+  } = useStaticQuery<GatsbyTypes.SeoQuery>(graphql`
     query Seo {
       site {
         siteMetadata {

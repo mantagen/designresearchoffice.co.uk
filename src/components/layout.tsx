@@ -36,6 +36,10 @@ const sitePaddingVertical = css`
   }
 `;
 
+const ArchitectSpan = styled.span`
+  margin-left: 6px;
+`
+
 type NavLinkProps = Omit<GatsbyLinkProps<undefined>, "ref">;
 const primaryNavLinks: NavLinkProps[] = [
   {
@@ -56,7 +60,7 @@ const primaryNavLinks: NavLinkProps[] = [
     to: "/valis-loizides",
     children: (
       <Fragment>
-        Valis Loizides <span className="spacer">Architect</span>
+        Valis Loizides <ArchitectSpan>Architect</ArchitectSpan>
       </Fragment>
     ),
   },
@@ -115,8 +119,8 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
     display: none;
 
     ${(props) =>
-      props.isOpen &&
-      `
+    props.isOpen &&
+    `
       display: block;
       position: fixed;
       top: 0;
@@ -126,7 +130,7 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
       width: 100%;
       left: 0;
       z-index: 9;
-      background-color: white;
+      background-color: ${colors.white};
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       `}
