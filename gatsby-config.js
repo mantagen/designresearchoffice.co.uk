@@ -10,7 +10,7 @@ module.exports = {
     title: `Design Research Office`,
     author: `Valis Loizides`,
     description: `Valis Loizides, Design Research Office, London`,
-    siteUrl: `http://www.designresearchoffice.co.uk`,
+    siteUrl: `https://www.designresearchoffice.co.uk`,
   },
   plugins: [
     {
