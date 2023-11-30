@@ -1,10 +1,15 @@
 import React from "react";
-import { PageProps } from "gatsby";
+import { HeadProps, PageProps } from "gatsby";
 import Layout from "../components/layout";
+import Seo from "../components/seo";
 
-const Home: React.FC<PageProps> = (props) => {
+export const Head = (props: HeadProps) => (
+  <Seo title="Not Found" pathname={props.location.pathname} />
+)
+
+const Home: React.FC<PageProps> = () => {
   return (
-    <Layout seoProps={{ title: "Not Found" }}>404, page not found.</Layout>
+    <Layout>404, page not found.</Layout>
   );
 };
 

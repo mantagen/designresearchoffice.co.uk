@@ -4,7 +4,9 @@
  * See: https://www.gatsbyjs.com/docs/gatsby-config/
  */
 
-module.exports = {
+import type { GatsbyConfig } from "gatsby";
+
+const config: GatsbyConfig = {
   /* Your site config here */
   siteMetadata: {
     title: `Design Research Office`,
@@ -41,3 +43,5 @@ module.exports = {
     `gatsby-plugin-robots-txt`
   ],
 };
+
+export default config

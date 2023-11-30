@@ -1,6 +1,6 @@
 import React, { CSSProperties, useCallback, useEffect } from "react";
 import { useEmblaCarousel } from "embla-carousel/react";
-import Img from "gatsby-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { graphql, useStaticQuery } from "gatsby";
 
 import { ImageData } from "../types/image-data";
@@ -39,10 +39,10 @@ const RightArrowWrapper = styled(IconButton)`
 const Carousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, speed: 5 });
 
-  const data: { allFile: { edges: ImageData[] } } = useStaticQuery(graphql`
+  const data = useStaticQuery(graphql`
     query {
       allFile(
-        sort: { fields: name, order: ASC }
+        sort: {name: ASC}
         filter: { relativeDirectory: { eq: "images/home-carousel" } }
       ) {
         edges {
@@ -50,20 +50,20 @@ const Carousel = () => {
             id
             name
             childImageSharp {
-              fluid(maxWidth: 1200, quality: 70) {
-                aspectRatio
-                src
-                srcSet
-                srcWebp
-                srcSetWebp
-                sizes
-              }
+              gatsbyImageData(
+                width: 1200
+                quality: 70
+                layout: CONSTRAINED
+                aspectRatio: 1.5
+                formats: [AUTO, WEBP]
+              )
             }
           }
         }
       }
     }
   `);
+
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -103,20 +103,22 @@ const Carousel = () => {
       <div onClick={onClick} style={viewportCss} ref={emblaRef}>
         <div style={containerCss}>
           {data.allFile.edges.map(
-            (edge) =>
-              edge.node.childImageSharp && (
+            (edge) => {
+              const image = getImage(edge.node.childImageSharp.gatsbyImageData)
+              if (!image) {
+                return null;
+              }
+              return (
                 <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
-                  <Img
-                    fluid={{
-                      ...edge.node.childImageSharp.fluid,
-                      aspectRatio: 1.5,
-                    }}
+                  <GatsbyImage
+                    image={image}
                     alt={edge.node.name}
                     backgroundColor={colors.backgroundGrey}
                     loading="eager"
                   />
                 </div>
               )
+            }
           )}
         </div>
       </div>

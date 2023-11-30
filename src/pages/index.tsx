@@ -6,7 +6,7 @@ import Carousel from "../components/carousel";
 
 const Home: React.FC<PageProps> = (props) => {
   return (
-    <Layout>
+    <Layout {...props}>
       <Carousel />
     </Layout>
   );

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { PageProps } from "gatsby";
+import { HeadProps, PageProps } from "gatsby";
 import styled from "styled-components";
 
 import Layout from "../components/layout";
@@ -7,6 +7,13 @@ import WorkText from "../components/work-text";
 import SafeImage from "../components/safe-image";
 import { ImageData } from "../types/image-data";
 import { TEXT_MAX_WIDTH } from "../theme";
+import Seo from "../components/seo";
+
+export const Head = (props: HeadProps) => {
+  console.log(props);
+
+  return <Seo pathname={props.location.pathname} />;
+}
 
 const Container = styled.div`
   max-width: ${TEXT_MAX_WIDTH};
@@ -25,11 +32,11 @@ const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
 
   return (
     <Layout
-      seoProps={{
-        title: title.join(", "),
-        description: text[0],
-        image: firstImage?.node.childImageSharp?.fixed?.src,
-      }}
+      // seoProps={{
+      //   title: title.join(", "),
+      //   description: text[0],
+      //   image: firstImage?.node.childImageSharp?.fixed?.src,
+      // }}
       secondaryNavProps={{ alwaysVisible: false }}
     >
       <Container>
