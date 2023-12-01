@@ -44,6 +44,9 @@
     "react-helmet": "^6.1.0",
     "styled-components": "^6.1.1"
   },
+  "optionalDependencies": {
+    "@parcel/watcher-linux-x64-glibc": "^2.3.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mantagen/designresearchoffice.co.uk"
