@@ -1,52 +1,59 @@
 import React from "react";
-import { PageProps, useStaticQuery, graphql } from "gatsby";
+import { PageProps, useStaticQuery, graphql, HeadProps } from "gatsby";
 
 import Layout from "../components/layout";
 import TextPage from "../components/text-page";
 import SafeImage, { ImageNode } from "../components/safe-image";
+import Seo from "../components/seo";
+
+const QUERY = graphql`
+  query {
+    file(relativePath: { eq: "images/valis.jpg" }) {
+      id
+      name
+      childImageSharp {
+        gatsbyImageData(quality: 70, layout: FULL_WIDTH, formats: [AUTO, WEBP])
+        fixedImage: gatsbyImageData(
+          width: 960
+          quality: 70
+          layout: FIXED
+          formats: [AUTO, WEBP]
+        )
+      }
+    }
+  }
+`;
+export const Head = (props: HeadProps<{}, PageProps>) => {
+  const data: {
+    file: ImageNode;
+  } = useStaticQuery(QUERY);
+
+  return (
+    <Seo
+      pathname={props.location.pathname}
+      title="Valis Loizides"
+      description={`Valis Loizides was born in Cyprus. He graduated from the Architectural
+    Association School of Architecture in London with Honours in 1997. He
+    continued at the AA for Postgraduate studies until 1999, on a full
+    scholarship offered by the Architectural Association, and received a
+    Master of Arts. He established the Design Research Office (DRO) in
+    2006, and practices architecture internationally in the private
+    sector, with offices in the UK and Cyprus.`
+        .split("\n")
+        .map((a) => a.trim())
+        .join(" ")}
+      image={data.file?.childImageSharp?.fixedImage?.images?.fallback?.src}
+    />
+  );
+};
 
 const ValisLoizides: React.FC<PageProps> = (props) => {
   const data: {
     file: ImageNode;
-  } = useStaticQuery(graphql`
-    query {
-      file(relativePath: { eq: "images/valis.jpg" }) {
-        id
-        name
-        childImageSharp {
-          fluid(quality: 70) {
-            aspectRatio
-            src
-            srcSet
-            srcWebp
-            srcSetWebp
-            sizes
-          }
-          fixed(width: 960) {
-            src
-          }
-        }
-      }
-    }
-  `);
+  } = useStaticQuery(QUERY);
 
   return (
-    <Layout
-      seoProps={{
-        title: "Valis Loizides",
-        description: `Valis Loizides was born in Cyprus. He graduated from the Architectural
-          Association School of Architecture in London with Honours in 1997. He
-          continued at the AA for Postgraduate studies until 1999, on a full
-          scholarship offered by the Architectural Association, and received a
-          Master of Arts. He established the Design Research Office (DRO) in
-          2006, and practices architecture internationally in the private
-          sector, with offices in the UK and Cyprus.`
-          .split("\n")
-          .map((a) => a.trim())
-          .join(" "),
-        image: data.file?.childImageSharp?.fixed?.src,
-      }}
-    >
+    <Layout {...props}>
       <TextPage>
         <SafeImage node={data.file} alt="Valis Loizides" />
         <p>

@@ -6,7 +6,6 @@ import { FocusOn } from "react-focus-on";
 
 import GlobalStyle from "./global-style";
 import works from "../works.json";
-import Seo, { SeoProps } from "./seo";
 import useIsMobile, { MOBILE_BREAK_POINT } from "../helpers/useIsMobile";
 import {
   colors,
@@ -17,23 +16,12 @@ import {
 } from "../theme";
 import MenuIcon from "./menu-icon";
 import IconButton from "./icon-button";
-import { useLocation } from "@reach/router";
 
 const leftPanelWidthPx = 490;
 
 const mainPaddingHorizontalMobile = css`
   padding-right: ${PADDING_HORIZONTAL_MOBILE};
   padding-left: ${PADDING_HORIZONTAL_MOBILE};
-`;
-
-const sitePaddingVertical = css`
-  padding-top: ${PADDING_VERTICAL_DESKTOP};
-  padding-bottom: ${PADDING_VERTICAL_DESKTOP};
-
-  @media (max-width: ${MOBILE_BREAK_POINT}) {
-    padding-top: ${PADDING_VERTICAL_MOBILE};
-    padding-bottom: ${PADDING_VERTICAL_MOBILE};
-  }
 `;
 
 const ArchitectSpan = styled.span`
@@ -69,12 +57,15 @@ const primaryNavLinks: NavLinkProps[] = [
 const Main = styled.main`
   padding-right: ${PADDING_HORIZONTAL_DESKTOP};
   padding-left: ${leftPanelWidthPx}px;
+  padding-top: ${PADDING_VERTICAL_DESKTOP};
+  padding-bottom: ${PADDING_VERTICAL_DESKTOP};
   max-width: ${1110 + leftPanelWidthPx}px;
 
   @media (max-width: ${MOBILE_BREAK_POINT}) {
     ${mainPaddingHorizontalMobile}
+    padding-top: ${PADDING_VERTICAL_DESKTOP};
+    padding-bottom: ${PADDING_VERTICAL_DESKTOP};
   }
-  ${sitePaddingVertical}
 `;
 
 const PrimaryNavLi = styled.li`
@@ -107,7 +98,9 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
   z-index: 2;
   display: flex;
   flex-direction: column;
-  width: ${leftPanelWidthPx};
+  width: ${leftPanelWidthPx}px;
+  padding-top: ${PADDING_VERTICAL_DESKTOP};
+  padding-bottom: ${PADDING_VERTICAL_DESKTOP};
 
   &:focus-within {
     a {
@@ -121,6 +114,8 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
     ${(props) =>
     props.isOpen &&
     `
+      padding-top: ${PADDING_VERTICAL_MOBILE};
+      padding-bottom: ${PADDING_VERTICAL_MOBILE};
       display: block;
       position: fixed;
       top: 0;
@@ -136,8 +131,6 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
       `}
     }
   }
-
-  ${sitePaddingVertical}
 `;
 
 const Nav = styled.nav`
@@ -229,18 +222,16 @@ const SecondaryNavUl = styled.ul<SecondaryNavProps>`
 `;
 
 interface LayoutProps {
-  seoProps?: SeoProps;
   secondaryNavProps?: SecondaryNavProps;
   forceNavOpen?: boolean;
+  location?: Location
 }
 const Layout: React.FC<LayoutProps> = (props) => {
-  const { children, secondaryNavProps, seoProps, forceNavOpen = false } = props;
+  const { children, secondaryNavProps, forceNavOpen = false, location } = props; 
   const [navOpen, setNavOpen] = useState(forceNavOpen);
   const [menuHasFocus, setMenuHasFocus] = useState(forceNavOpen);
 
   const isMobile = useIsMobile();
-
-  const location = useLocation();
 
   useEffect(() => {
     setNavOpen(forceNavOpen);
@@ -265,7 +256,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
 
   const navLinkOnClick = (to: string) => () => {
     if (!forceNavOpen) {
-      if (to === location.pathname) {
+      if (to === location?.pathname) {
         setNavOpen(false);
       }
     }
@@ -276,7 +267,6 @@ const Layout: React.FC<LayoutProps> = (props) => {
   return (
     <Fragment>
       <GlobalStyle />
-      <Seo {...seoProps} />
       <FocusOn enabled={isMobile && navOpen} autoFocus={false}>
         <LeftPanel isOpen={navOpen}>
           <Nav id="navigation">

@@ -1,6 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-import { useLocation } from "@reach/router";
 import { useStaticQuery, graphql } from "gatsby";
 
 export type SeoProps = {
@@ -8,9 +6,9 @@ export type SeoProps = {
   description?: string;
   image?: string;
   author?: string;
+  pathname: string;
 };
 const Seo: React.FC<SeoProps> = (props) => {
-  const { pathname } = useLocation();
   const {
     site: { siteMetadata },
   }: {
@@ -50,14 +48,14 @@ const Seo: React.FC<SeoProps> = (props) => {
     ? `${props.title} - ${defaults.title}`
     : defaults.title;
   const description = props.description || defaults.description;
-  const url = new URL(pathname, defaults.siteUrl).href;
+  const url = new URL(props.pathname, defaults.siteUrl).href;
   const image = props.image
     ? new URL(props.image, defaults.siteUrl).href
     : false;
 
   return (
-    <Helmet defaultTitle={defaults.title}>
-      <title>{props.title}</title>
+    <>
+      <title>{props.title || defaults.title}</title>
       <link rel="canonical" href={url} />
       <meta name="description" content={description} />
       {image && <meta name="image" content={image} />}
@@ -74,7 +72,7 @@ const Seo: React.FC<SeoProps> = (props) => {
       <meta name="twitter:description" content={description} />
       {image && <meta name="twitter:image" content={image} />}
       <html lang="en" />
-    </Helmet>
+    </>
   );
 };
 

@@ -1,17 +1,12 @@
 import React from "react";
-import Img, { FluidObject } from "gatsby-image";
+import { GatsbyImage, ImageDataLike, getImage } from "gatsby-plugin-image";
 import ImageWrapper from "./image-wrapper";
 import { colors } from "../theme";
 
 export type ImageNode = {
   id: string;
   name: string;
-  childImageSharp: {
-    fluid: FluidObject | FluidObject[];
-    fixed?: {
-      src: string;
-    };
-  } | null;
+  childImageSharp: { gatsbyImageData: ImageDataLike };
 };
 type SafeImageProps = {
   node: ImageNode;
@@ -22,15 +17,17 @@ const SafeImage: React.FC<SafeImageProps> = (props) => {
   const { alt, node } = props;
   const { name, childImageSharp } = node;
 
-  if (!childImageSharp) {
+  const image = getImage(childImageSharp.gatsbyImageData);
+
+  if (!image) {
     console.warn(`SafeImage called without image, file name: ${name}`);
     return null;
   }
 
   return (
     <ImageWrapper>
-      <Img
-        fluid={childImageSharp.fluid}
+      <GatsbyImage
+        image={image}
         backgroundColor={colors.backgroundGrey}
         alt={alt}
       />

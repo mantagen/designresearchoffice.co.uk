@@ -1,33 +1,37 @@
 import React from "react";
-import { Link, PageProps } from "gatsby";
+import { HeadProps, Link, PageProps } from "gatsby";
 
 import Layout from "../components/layout";
 import TextPage from "../components/text-page";
 import styled from "styled-components";
 import { colors } from "../theme";
+import Seo from "../components/seo";
 
 const SmallPrint = styled.div`
   color: ${colors.lightGrey};
 `;
 
-const Office: React.FC<PageProps> = () => {
+export const Head = (props: HeadProps) => (
+  <Seo
+    pathname={props.location.pathname}
+    title="Office"
+    description={`The practice was established in 2006 to provide services and solutions
+    in architecture, design, urbanism and landscape. It operates within
+    the traditional boundaries of architecture and urbanism. Each
+    project draws equally from research and design, initiating conceptual
+    studies to complex technical implementations. The Design Research
+    Office is dedicated to realizing architecture, and focuses its ongoing
+    research around creating a singular architectural language that
+    springs from multiple collaborative processes.`
+      .split("\n")
+      .map((a) => a.trim())
+      .join(" ")}
+  />
+)
+
+const Office: React.FC<PageProps> = (props) => {
   return (
-    <Layout
-      seoProps={{
-        title: "Office",
-        description: `The practice was established in 2006 to provide services and solutions
-          in architecture, design, urbanism and landscape. It operates within
-          the traditional boundaries of architecture and urbanism. Each
-          project draws equally from research and design, initiating conceptual
-          studies to complex technical implementations. The Design Research
-          Office is dedicated to realizing architecture, and focuses its ongoing
-          research around creating a singular architectural language that
-          springs from multiple collaborative processes.`
-          .split("\n")
-          .map((a) => a.trim())
-          .join(" "),
-      }}
-    >
+    <Layout {...props}>
       <TextPage>
         <h2>Design Research Office</h2>
         <p>

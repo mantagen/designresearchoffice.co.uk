@@ -1,14 +1,22 @@
 import React from "react";
-import { PageProps } from "gatsby";
+import { HeadProps, PageProps } from "gatsby";
 import Layout from "../components/layout";
+import Seo from "../components/seo";
 
-const Work: React.FC<PageProps> = () => {
+export const Head = (props: HeadProps) => (
+  <Seo
+    pathname={props.location.pathname}
+    title="Works" />
+
+);
+
+const Work: React.FC<PageProps> = (props) => {
   return (
     <Layout
+      {...props}
       forceNavOpen
       secondaryNavProps={{ alwaysVisible: true }}
-      seoProps={{ title: "Works" }}
-    ></Layout>
+    />
   );
 };
 
