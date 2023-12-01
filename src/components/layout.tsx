@@ -63,8 +63,8 @@ const Main = styled.main`
 
   @media (max-width: ${MOBILE_BREAK_POINT}) {
     ${mainPaddingHorizontalMobile}
-    padding-top: ${PADDING_VERTICAL_DESKTOP};
-    padding-bottom: ${PADDING_VERTICAL_DESKTOP};
+    padding-top: ${PADDING_VERTICAL_MOBILE};
+    padding-bottom: ${PADDING_VERTICAL_MOBILE};
   }
 `;
 
