@@ -17,7 +17,7 @@ const SafeImage: React.FC<SafeImageProps> = (props) => {
   const { alt, node } = props;
   const { name, childImageSharp } = node;
 
-  const image = getImage(childImageSharp.gatsbyImageData)
+  const image = getImage(childImageSharp.gatsbyImageData);
 
   if (!image) {
     console.warn(`SafeImage called without image, file name: ${name}`);

@@ -4,16 +4,23 @@ import styled from "styled-components";
 
 import Layout from "../components/layout";
 import WorkText from "../components/work-text";
-import SafeImage from "../components/safe-image";
-import { ImageData } from "../types/image-data";
+import SafeImage, { ImageNode } from "../components/safe-image";
 import { TEXT_MAX_WIDTH } from "../theme";
 import Seo from "../components/seo";
 
-export const Head = (props: HeadProps) => {
-  console.log(props);
+export const Head = (props: HeadProps<{}, WorkPageProps>) => {
+  const { images, title, text } = props.pageContext;
+  const [firstImage] = images;
 
-  return <Seo pathname={props.location.pathname} />;
-}
+  return (
+    <Seo
+      title={title.join(", ")}
+      description={text[0]}
+      pathname={props.location.pathname}
+      image={firstImage?.node.childImageSharp?.fixedImage?.images?.fallback?.src}
+    />
+  );
+};
 
 const Container = styled.div`
   max-width: ${TEXT_MAX_WIDTH};
@@ -23,7 +30,7 @@ interface WorkPageProps {
   slug: string;
   title: string[];
   text: string[];
-  images: ImageData[];
+  images: { node: ImageNode }[];
 }
 const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
   const { images, title, text } = props.pageContext;
@@ -31,14 +38,7 @@ const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
   const [firstImage, ...otherImages] = images;
 
   return (
-    <Layout
-      // seoProps={{
-      //   title: title.join(", "),
-      //   description: text[0],
-      //   image: firstImage?.node.childImageSharp?.fixed?.src,
-      // }}
-      secondaryNavProps={{ alwaysVisible: false }}
-    >
+    <Layout secondaryNavProps={{ alwaysVisible: false }}>
       <Container>
         {firstImage && <SafeImage alt="Mansion House" node={firstImage.node} />}
         <WorkText>

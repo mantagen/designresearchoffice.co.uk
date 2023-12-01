@@ -6,8 +6,27 @@ import TextPage from "../components/text-page";
 import SafeImage, { ImageNode } from "../components/safe-image";
 import Seo from "../components/seo";
 
-export const Head = (props: HeadProps) => {
-  console.log(props);
+const QUERY = graphql`
+  query {
+    file(relativePath: { eq: "images/valis.jpg" }) {
+      id
+      name
+      childImageSharp {
+        gatsbyImageData(quality: 70, layout: FULL_WIDTH, formats: [AUTO, WEBP])
+        fixedImage: gatsbyImageData(
+          width: 960
+          quality: 70
+          layout: FIXED
+          formats: [AUTO, WEBP]
+        )
+      }
+    }
+  }
+`;
+export const Head = (props: HeadProps<{}, PageProps>) => {
+  const data: {
+    file: ImageNode;
+  } = useStaticQuery(QUERY);
 
   return (
     <Seo
@@ -19,38 +38,19 @@ export const Head = (props: HeadProps) => {
     scholarship offered by the Architectural Association, and received a
     Master of Arts. He established the Design Research Office (DRO) in
     2006, and practices architecture internationally in the private
-    sector, with offices in the UK and Cyprus.`.split("\n")
+    sector, with offices in the UK and Cyprus.`
+        .split("\n")
         .map((a) => a.trim())
         .join(" ")}
-    // image={data.file?.childImageSharp?.fixed?.src}
+      image={data.file?.childImageSharp?.fixedImage?.images?.fallback?.src}
     />
-  )
+  );
 };
 
 const ValisLoizides: React.FC<PageProps> = (props) => {
   const data: {
     file: ImageNode;
-  } = useStaticQuery(graphql`
-    query {
-      file(relativePath: { eq: "images/valis.jpg" }) {
-        id
-        name
-        childImageSharp {
-          gatsbyImageData(
-            quality: 70
-            layout: FULL_WIDTH
-            formats: [AUTO, WEBP]
-          )
-          fixedImage: gatsbyImageData(
-            width: 960
-            quality: 70
-            layout: FIXED
-            formats: [AUTO, WEBP]
-          )
-        }
-      }
-    }  
-  `);
+  } = useStaticQuery(QUERY);
 
   return (
     <Layout {...props}>
