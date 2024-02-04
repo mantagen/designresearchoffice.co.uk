@@ -23,6 +23,7 @@ const config: GatsbyConfig = {
         allExtensions: true, // defaults to false
       },
     },
+    `gatsby-plugin-image`,
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,

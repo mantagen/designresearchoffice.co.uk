@@ -1,9 +1,8 @@
 import React, { CSSProperties, useCallback, useEffect } from "react";
-import { useEmblaCarousel } from "embla-carousel/react";
+import useEmblaCarousel from "embla-carousel-react";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { graphql, useStaticQuery } from "gatsby";
 
-import { ImageData } from "../types/image-data";
 import styled from "styled-components";
 import RightArrow from "./right-arrow";
 import { colors } from "../theme";
@@ -37,12 +36,12 @@ const RightArrowWrapper = styled(IconButton)`
 `;
 
 const Carousel = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, speed: 5 });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   const data = useStaticQuery(graphql`
     query {
       allFile(
-        sort: {name: ASC}
+        sort: { name: ASC }
         filter: { relativeDirectory: { eq: "images/home-carousel" } }
       ) {
         edges {
@@ -63,7 +62,6 @@ const Carousel = () => {
       }
     }
   `);
-
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -102,24 +100,22 @@ const Carousel = () => {
     <CarouselRoot>
       <div onClick={onClick} style={viewportCss} ref={emblaRef}>
         <div style={containerCss}>
-          {data.allFile.edges.map(
-            (edge) => {
-              const image = getImage(edge.node.childImageSharp.gatsbyImageData)
-              if (!image) {
-                return null;
-              }
-              return (
-                <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
-                  <GatsbyImage
-                    image={image}
-                    alt={edge.node.name}
-                    backgroundColor={colors.backgroundGrey}
-                    loading="eager"
-                  />
-                </div>
-              )
+          {data.allFile.edges.map((edge) => {
+            const image = getImage(edge.node.childImageSharp.gatsbyImageData);
+            if (!image) {
+              return null;
             }
-          )}
+            return (
+              <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
+                <GatsbyImage
+                  image={image}
+                  alt={edge.node.name}
+                  backgroundColor={colors.backgroundGrey}
+                  loading="eager"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
       <RightArrowWrapper onClick={onClick} aria-label="Next slide">

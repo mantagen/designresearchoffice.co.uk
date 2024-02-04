@@ -13,6 +13,7 @@
     "test": "echo \"Nothing to see here, move along.\" && exit 1"
   },
   "dependencies": {
+    "embla-carousel-react": "^7.0.0",
     "gatsby": "^5.12.11",
     "gatsby-link": "^5.12.1",
     "gatsby-plugin-image": "^3.12.3",
@@ -31,7 +32,6 @@
     "babel-plugin-styled-components": "^1.11.1",
     "basic-ftp": "^4.6.3",
     "dotenv": "^8.2.0",
-    "embla-carousel": "^4.1.0",
     "fontsource-roboto": "^3.0.3",
     "gatsby-plugin-google-gtag": "^5.12.3",
     "gatsby-plugin-sharp": "^5.12.3",
