@@ -7,7 +7,7 @@
     "build": "gatsby clean && gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "start": "npm run develop",
+    "start": "dotenvx run -- npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Nothing to see here, move along.\" && exit 1"
@@ -21,17 +21,18 @@
     "gatsby-plugin-typescript": "^5.12.1",
     "gatsby-react-router-scroll": "^6.12.0",
     "gatsby-script": "^2.12.0",
+    "gatsby-source-wordpress": "^7.13.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^0.26.0",
     "@types/node": "^20.10.1",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.9",
     "@types/styled-components": "^5.1.4",
     "babel-plugin-styled-components": "^1.11.1",
     "basic-ftp": "^4.6.3",
-    "dotenv": "^8.2.0",
     "fontsource-roboto": "^3.0.3",
     "gatsby-plugin-google-gtag": "^5.12.3",
     "gatsby-plugin-sharp": "^5.12.3",

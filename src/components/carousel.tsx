@@ -1,7 +1,6 @@
 import React, { CSSProperties, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
-import { graphql, useStaticQuery } from "gatsby";
 
 import styled from "styled-components";
 import RightArrow from "./right-arrow";
@@ -35,33 +34,9 @@ const RightArrowWrapper = styled(IconButton)`
   }
 `;
 
-const Carousel = () => {
+const Carousel = (props) => {
+  const nodes = props.nodes;
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-
-  const data = useStaticQuery(graphql`
-    query {
-      allFile(
-        sort: { name: ASC }
-        filter: { relativeDirectory: { eq: "images/home-carousel" } }
-      ) {
-        edges {
-          node {
-            id
-            name
-            childImageSharp {
-              gatsbyImageData(
-                width: 1200
-                quality: 70
-                layout: CONSTRAINED
-                aspectRatio: 1.5
-                formats: [AUTO, WEBP]
-              )
-            }
-          }
-        }
-      }
-    }
-  `);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -100,16 +75,18 @@ const Carousel = () => {
     <CarouselRoot>
       <div onClick={onClick} style={viewportCss} ref={emblaRef}>
         <div style={containerCss}>
-          {data.allFile.edges.map((edge) => {
-            const image = getImage(edge.node.childImageSharp.gatsbyImageData);
+          {nodes.map((node) => {
+            const image = getImage(
+              node.localFile.childImageSharp.gatsbyImageData
+            );
             if (!image) {
               return null;
             }
             return (
-              <div key={`carousel-image-${edge.node.id}`} style={slideCss}>
+              <div key={`carousel-image-${node.id}`} style={slideCss}>
                 <GatsbyImage
                   image={image}
-                  alt={edge.node.name}
+                  alt={node.localFile.name || ""}
                   backgroundColor={colors.backgroundGrey}
                   loading="eager"
                 />

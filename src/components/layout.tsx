@@ -1,11 +1,10 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { Link, GatsbyLinkProps } from "gatsby";
+import { Link, GatsbyLinkProps, graphql, useStaticQuery } from "gatsby";
 import "fontsource-roboto";
 import { FocusOn } from "react-focus-on";
 
 import GlobalStyle from "./global-style";
-import works from "../works.json";
 import useIsMobile, { MOBILE_BREAK_POINT } from "../helpers/useIsMobile";
 import {
   colors,
@@ -26,7 +25,7 @@ const mainPaddingHorizontalMobile = css`
 
 const ArchitectSpan = styled.span`
   margin-left: 6px;
-`
+`;
 
 type NavLinkProps = Omit<GatsbyLinkProps<undefined>, "ref">;
 const primaryNavLinks: NavLinkProps[] = [
@@ -112,8 +111,8 @@ const LeftPanel = styled.header<{ isOpen?: boolean }>`
     display: none;
 
     ${(props) =>
-    props.isOpen &&
-    `
+      props.isOpen &&
+      `
       padding-top: ${PADDING_VERTICAL_MOBILE};
       padding-bottom: ${PADDING_VERTICAL_MOBILE};
       display: block;
@@ -224,10 +223,25 @@ const SecondaryNavUl = styled.ul<SecondaryNavProps>`
 interface LayoutProps {
   secondaryNavProps?: SecondaryNavProps;
   forceNavOpen?: boolean;
-  location?: Location
+  location?: Location;
 }
 const Layout: React.FC<LayoutProps> = (props) => {
-  const { children, secondaryNavProps, forceNavOpen = false, location } = props; 
+  const query = useStaticQuery(graphql`
+    query {
+      allWpWorkPostType(sort: { date: DESC }) {
+        edges {
+          node {
+            title
+            slug
+          }
+        }
+      }
+    }
+  `);
+
+  const works = query.allWpWorkPostType.edges.map(({ node }) => node);
+
+  const { children, secondaryNavProps, forceNavOpen = false, location } = props;
   const [navOpen, setNavOpen] = useState(forceNavOpen);
   const [menuHasFocus, setMenuHasFocus] = useState(forceNavOpen);
 
@@ -299,7 +313,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
                         onBlur={navLinkOnBlur}
                         onClick={navLinkOnClick(to)}
                       >
-                        {title[0]}
+                        {title}
                       </NavLink>
                     </li>
                   );

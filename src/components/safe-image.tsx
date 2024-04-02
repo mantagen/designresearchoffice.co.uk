@@ -15,6 +15,7 @@ type SafeImageProps = {
 
 const SafeImage: React.FC<SafeImageProps> = (props) => {
   const { alt, node } = props;
+
   const { name, childImageSharp } = node;
 
   const image = getImage(childImageSharp.gatsbyImageData);
