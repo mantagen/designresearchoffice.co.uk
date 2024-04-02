@@ -6,6 +6,7 @@
 // You can delete this file if you're not using it
 import path from "path";
 import { CreatePagesArgs } from "gatsby";
+import { WorkPageProps } from "./src/templates/work-page";
 
 exports.createPages = async ({
   graphql,
@@ -15,7 +16,7 @@ exports.createPages = async ({
   const { createPage } = actions;
   const WorkPageTemplate = path.resolve("./src/templates/work-page.tsx");
 
-  const workPagesRes = await graphql(`
+  const workPagesRes = await graphql<Queries.WorkPagesQuery>(`
     query WorkPages {
       allWpWorkPostType {
         edges {
@@ -54,20 +55,33 @@ exports.createPages = async ({
     }
   `);
 
-  const workPages = workPagesRes.data.allWpWorkPostType.edges.map((edge) => {
-    const { workFieldGroup, slug } = edge.node;
-    const { workTitle, workText, workImages } = workFieldGroup;
+  const workPages: WorkPageProps[] =
+    workPagesRes?.data?.allWpWorkPostType.edges.map((edge) => {
+      const { workFieldGroup, slug } = edge.node;
+      if (!workFieldGroup) throw new Error(`workFieldGroup is missing`);
+      const { workTitle, workText, workImages } = workFieldGroup;
+      if (!workText) throw new Error(`workText is missing`);
+      if (!slug) throw new Error("slug is missing");
+      if (!workTitle) throw new Error("workTitle is missing");
+      const paragraphs: string[] = [];
+      workText.forEach((t) =>
+        t?.workTextParagraph ? paragraphs.push(t.workTextParagraph) : null
+      );
 
-    return {
-      edge,
-      slug,
-      titleHtml: workTitle,
-      paragraphs: workText.map((t) => t.workTextParagraph),
-      images: workImages?.nodes || [],
-    };
-  });
+      const workPage: WorkPageProps = {
+        edge,
+        slug,
+        titleHtml: workTitle,
+        paragraphs,
+        images: workImages?.nodes || [],
+      };
 
-  if (workPages.errors) {
+      return workPage;
+    }) || [];
+
+  if (!workPages) throw new Error(`workPages is missing`);
+
+  if ("errors" in workPages) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     return;
   }

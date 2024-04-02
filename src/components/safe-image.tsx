@@ -1,27 +1,36 @@
 import React from "react";
-import { GatsbyImage, ImageDataLike, getImage } from "gatsby-plugin-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import ImageWrapper from "./image-wrapper";
 import { colors } from "../theme";
 
 export type ImageNode = {
-  id: string;
-  name: string;
-  childImageSharp: { gatsbyImageData: ImageDataLike };
+  id: string | null;
+  altText: string | null;
+  childImageSharp: Queries.ImageSharp | null;
 };
 type SafeImageProps = {
-  node: ImageNode;
-  alt: string;
+  node?: ImageNode | null;
+  alt?: string | null;
 };
 
 const SafeImage: React.FC<SafeImageProps> = (props) => {
   const { alt, node } = props;
+  if (!node) {
+    console.warn("SafeImage called without node");
+    return null;
+  }
 
-  const { name, childImageSharp } = node;
+  const { altText, childImageSharp } = node;
+
+  if (!childImageSharp) {
+    console.warn(`SafeImage called without childImageSharp, file: ${altText}`);
+    return null;
+  }
 
   const image = getImage(childImageSharp.gatsbyImageData);
 
   if (!image) {
-    console.warn(`SafeImage called without image, file name: ${name}`);
+    console.warn(`SafeImage called without image, file: ${altText}`);
     return null;
   }
 
@@ -30,7 +39,7 @@ const SafeImage: React.FC<SafeImageProps> = (props) => {
       <GatsbyImage
         image={image}
         backgroundColor={colors.backgroundGrey}
-        alt={alt}
+        alt={alt || node.altText || ""}
       />
     </ImageWrapper>
   );

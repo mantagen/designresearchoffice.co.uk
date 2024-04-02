@@ -4,8 +4,8 @@ import { PageProps, graphql } from "gatsby";
 import Layout from "../components/layout";
 import Carousel from "../components/carousel";
 
-const Home: React.FC<PageProps> = (props) => {
-  const nodes = props.data.wp.homePage.homeFieldGroup.homeCarousel.nodes;
+const Home: React.FC<PageProps<Queries.HomeCarouselQuery>> = (props) => {
+  const nodes = props?.data?.wp?.homePage?.homeFieldGroup?.homeCarousel?.nodes;
 
   return (
     <Layout {...props}>
@@ -21,9 +21,9 @@ export const query = graphql`
         homeFieldGroup {
           homeCarousel {
             nodes {
-              id
-              altText
               localFile {
+                id
+                altText: name
                 childImageSharp {
                   gatsbyImageData(
                     width: 1200

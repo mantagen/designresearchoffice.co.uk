@@ -23,12 +23,13 @@ export const Head = (props: HeadProps) => (
   />
 );
 
-const Office: React.FC<PageProps> = (props) => {
+const Office: React.FC<PageProps<Queries.OfficePageQuery>> = (props) => {
   return (
     <Layout {...props}>
       <TextPage
         dangerouslySetInnerHTML={{
-          __html: props.data.wp.officePage.officeFieldGroup.officeText,
+          __html:
+            props?.data?.wp?.officePage?.officeFieldGroup?.officeText || "",
         }}
       />
     </Layout>
@@ -36,7 +37,7 @@ const Office: React.FC<PageProps> = (props) => {
 };
 
 export const query = graphql`
-  query OfficeQuery {
+  query OfficePage {
     wp {
       officePage {
         officeFieldGroup {

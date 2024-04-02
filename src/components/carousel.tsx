@@ -1,6 +1,6 @@
 import React, { CSSProperties, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { GatsbyImage, IGatsbyImageData, getImage } from "gatsby-plugin-image";
 
 import styled from "styled-components";
 import RightArrow from "./right-arrow";
@@ -34,7 +34,18 @@ const RightArrowWrapper = styled(IconButton)`
   }
 `;
 
-const Carousel = (props) => {
+type ImageNodes =
+  | readonly {
+      readonly localFile: {
+        readonly id: string;
+        readonly altText: string | null;
+        readonly childImageSharp: {
+          readonly gatsbyImageData: IGatsbyImageData;
+        } | null;
+      } | null;
+    }[]
+  | undefined;
+const Carousel = (props: { nodes: ImageNodes }) => {
   const nodes = props.nodes;
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
@@ -75,18 +86,20 @@ const Carousel = (props) => {
     <CarouselRoot>
       <div onClick={onClick} style={viewportCss} ref={emblaRef}>
         <div style={containerCss}>
-          {nodes.map((node) => {
-            const image = getImage(
-              node.localFile.childImageSharp.gatsbyImageData
-            );
+          {nodes?.map((node) => {
+            const imageData = node?.localFile?.childImageSharp?.gatsbyImageData;
+            if (!imageData) {
+              return null;
+            }
+            const image = getImage(imageData);
             if (!image) {
               return null;
             }
             return (
-              <div key={`carousel-image-${node.id}`} style={slideCss}>
+              <div key={`carousel-image-${node.localFile.id}`} style={slideCss}>
                 <GatsbyImage
                   image={image}
-                  alt={node.localFile.name || ""}
+                  alt={node?.localFile?.altText || ""}
                   backgroundColor={colors.backgroundGrey}
                   loading="eager"
                 />

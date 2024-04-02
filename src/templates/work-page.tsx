@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { HeadProps, PageProps } from "gatsby";
 import styled from "styled-components";
 
@@ -28,12 +28,18 @@ const Container = styled.div`
   max-width: ${TEXT_MAX_WIDTH};
   margin-top: 155px;
 `;
-interface WorkPageProps {
+export type WorkPageProps = {
   slug: string;
   titleHtml: string;
   paragraphs: string[];
-  images: { localFile: ImageNode }[];
-}
+  images: {
+    localFile: ImageNode & {
+      childImageSharp: Queries.ImageSharp & {
+        fixedImage: Queries.ImageSharp["gatsbyImageData"];
+      };
+    };
+  }[];
+};
 const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
   const { images, titleHtml, paragraphs } = props.pageContext;
 
@@ -42,12 +48,7 @@ const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
   return (
     <Layout secondaryNavProps={{ alwaysVisible: false }}>
       <Container>
-        {firstImage && (
-          <SafeImage
-            alt={firstImage.localFile.name}
-            node={firstImage.localFile}
-          />
-        )}
+        {firstImage && <SafeImage node={firstImage.localFile} />}
         <WorkText>
           <h2
             dangerouslySetInnerHTML={{
@@ -62,11 +63,7 @@ const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
           ))}
         </WorkText>
         {otherImages.map((image, i) => (
-          <SafeImage
-            key={`work-page__image__${i}`}
-            alt={image.localFile.name}
-            node={image.localFile}
-          />
+          <SafeImage key={`work-page__image__${i}`} node={image.localFile} />
         ))}
       </Container>
     </Layout>

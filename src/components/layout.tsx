@@ -226,8 +226,8 @@ interface LayoutProps {
   location?: Location;
 }
 const Layout: React.FC<LayoutProps> = (props) => {
-  const query = useStaticQuery(graphql`
-    query {
+  const query = useStaticQuery<Queries.LayoutQuery>(graphql`
+    query Layout {
       allWpWorkPostType(sort: { date: DESC }) {
         edges {
           node {

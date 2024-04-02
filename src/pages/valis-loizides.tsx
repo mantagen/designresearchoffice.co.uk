@@ -6,8 +6,48 @@ import TextPage from "../components/text-page";
 import SafeImage from "../components/safe-image";
 import Seo from "../components/seo";
 
+function getAcfData(data: Queries.BiographyPageQuery) {
+  const acfData = data?.wp?.biographyPage?.biographyFieldGroup;
+  if (!acfData) throw new Error("No acfData");
+  return acfData;
+}
+export const Head = (
+  props: HeadProps<Queries.BiographyPageQuery, PageProps>
+) => {
+  const { biographyImage, biographyText } = getAcfData(props.data);
+  const imageData = biographyImage?.node.localFile;
+  if (!imageData) throw new Error("No imageData");
+  if (!biographyText) throw new Error("No biographyText");
+
+  return (
+    <Seo
+      pathname={props.location.pathname}
+      title="Valis Loizides"
+      description={biographyText[0]?.paragraph}
+      image={imageData?.childImageSharp?.fixedImage?.images?.fallback?.src}
+    />
+  );
+};
+
+const ValisLoizides: React.FC<PageProps<Queries.BiographyPageQuery>> = (
+  props
+) => {
+  const { biographyImage, biographyText } = getAcfData(props.data);
+  const imageData = biographyImage?.node.localFile;
+  return (
+    <Layout {...props}>
+      <TextPage>
+        <SafeImage node={imageData} alt="Valis Loizides" />
+        {biographyText.map((t) => {
+          return <p>{t?.paragraph}</p>;
+        })}
+      </TextPage>
+    </Layout>
+  );
+};
+
 export const query = graphql`
-  query BiographyQuery {
+  query BiographyPage {
     wp {
       biographyPage {
         biographyFieldGroup {
@@ -17,6 +57,8 @@ export const query = graphql`
           biographyImage {
             node {
               localFile {
+                id
+                altText: name
                 childImageSharp {
                   gatsbyImageData(
                     quality: 70
@@ -38,37 +80,5 @@ export const query = graphql`
     }
   }
 `;
-
-function getAcfData(props) {
-  return props.data.wp.biographyPage.biographyFieldGroup;
-}
-export const Head = (props: HeadProps<{}, PageProps>) => {
-  const { biographyImage, biographyText } = getAcfData(props);
-  const imageData = biographyImage.node.localFile;
-
-  return (
-    <Seo
-      pathname={props.location.pathname}
-      title="Valis Loizides"
-      description={biographyText[0].paragraph}
-      image={imageData?.childImageSharp?.fixedImage?.images?.fallback?.src}
-    />
-  );
-};
-
-const ValisLoizides: React.FC<PageProps> = (props) => {
-  const { biographyImage, biographyText } = getAcfData(props);
-  const imageData = biographyImage.node.localFile;
-  return (
-    <Layout {...props}>
-      <TextPage>
-        <SafeImage node={imageData} alt="Valis Loizides" />
-        {biographyText.map(({ paragraph }) => {
-          return <p>{paragraph}</p>;
-        })}
-      </TextPage>
-    </Layout>
-  );
-};
 
 export default ValisLoizides;

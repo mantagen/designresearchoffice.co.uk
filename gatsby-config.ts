@@ -14,6 +14,10 @@ const config: GatsbyConfig = {
     description: `Valis Loizides, Design Research Office, London`,
     siteUrl: `https://www.designresearchoffice.co.uk`,
   },
+  graphqlTypegen: {
+    generateOnBuild: true,
+    typesOutputPath: `gatsby-types.d.ts`,
+  },
   plugins: [
     `gatsby-plugin-image`,
     `gatsby-plugin-styled-components`,

@@ -2,25 +2,14 @@ import React from "react";
 import { useStaticQuery, graphql } from "gatsby";
 
 export type SeoProps = {
-  title?: string;
-  description?: string;
-  image?: string;
-  author?: string;
+  title?: string | null;
+  description?: string | null;
+  image?: string | null;
+  author?: string | null;
   pathname: string;
 };
 const Seo: React.FC<SeoProps> = (props) => {
-  const {
-    site: { siteMetadata },
-  }: {
-    site: {
-      siteMetadata: {
-        title: string;
-        description: string;
-        siteUrl: string;
-        author: string;
-      };
-    };
-  } = useStaticQuery<GatsbyTypes.SeoQuery>(graphql`
+  const res = useStaticQuery<Queries.SeoQuery>(graphql`
     query Seo {
       site {
         siteMetadata {
@@ -32,7 +21,10 @@ const Seo: React.FC<SeoProps> = (props) => {
       }
     }
   `);
-  const defaults = siteMetadata;
+
+  const defaults = { ...res.site?.siteMetadata };
+
+  if (!defaults) throw new Error("No defaults");
 
   if (defaults.siteUrl === "" && typeof window !== "undefined") {
     defaults.siteUrl = window.location.origin;
@@ -43,11 +35,12 @@ const Seo: React.FC<SeoProps> = (props) => {
     return null;
   }
 
-  const author = props.author || defaults.author;
-  const title = props.title
-    ? `${props.title} - ${defaults.title}`
-    : defaults.title;
-  const description = props.description || defaults.description;
+  if (!defaults.siteUrl) throw new Error("No defaults.siteUrl");
+
+  const author = props.author || defaults.author || "";
+  const title =
+    (props.title ? `${props.title} - ${defaults.title}` : defaults.title) || "";
+  const description = props.description || defaults.description || "";
   const url = new URL(props.pathname, defaults.siteUrl).href;
   const image = props.image
     ? new URL(props.image, defaults.siteUrl).href
