@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { HeadProps, PageProps } from "gatsby";
 import styled from "styled-components";
 
@@ -9,15 +9,17 @@ import { TEXT_MAX_WIDTH } from "../theme";
 import Seo from "../components/seo";
 
 export const Head = (props: HeadProps<{}, WorkPageProps>) => {
-  const { images, title, text } = props.pageContext;
+  const { images, titleHtml, paragraphs } = props.pageContext;
   const [firstImage] = images;
 
   return (
     <Seo
-      title={title.join(", ")}
-      description={text[0]}
+      title={titleHtml}
+      description={paragraphs[0]}
       pathname={props.location.pathname}
-      image={firstImage?.node.childImageSharp?.fixedImage?.images?.fallback?.src}
+      image={
+        firstImage?.localFile.childImageSharp?.fixedImage?.images?.fallback?.src
+      }
     />
   );
 };
@@ -26,41 +28,42 @@ const Container = styled.div`
   max-width: ${TEXT_MAX_WIDTH};
   margin-top: 155px;
 `;
-interface WorkPageProps {
+export type WorkPageProps = {
   slug: string;
-  title: string[];
-  text: string[];
-  images: { node: ImageNode }[];
-}
+  titleHtml: string;
+  paragraphs: string[];
+  images: {
+    localFile: ImageNode & {
+      childImageSharp: Queries.ImageSharp & {
+        fixedImage: Queries.ImageSharp["gatsbyImageData"];
+      };
+    };
+  }[];
+};
 const WorkPage: React.FC<PageProps<null, WorkPageProps>> = (props) => {
-  const { images, title, text } = props.pageContext;
+  const { images, titleHtml, paragraphs } = props.pageContext;
 
   const [firstImage, ...otherImages] = images;
 
   return (
     <Layout secondaryNavProps={{ alwaysVisible: false }}>
       <Container>
-        {firstImage && <SafeImage alt="Mansion House" node={firstImage.node} />}
+        {firstImage && <SafeImage node={firstImage.localFile} />}
         <WorkText>
-          <h2>
-            {title.map((part, i) => (
-              <Fragment key={`work-page__title-fragment__${i}`}>
-                {part}
-                <br />
-              </Fragment>
-            ))}
-          </h2>
+          <h2
+            dangerouslySetInnerHTML={{
+              __html: titleHtml.replace("\n", "<br />"),
+            }}
+          />
           <br />
-          {text.map((part, i) => (
-            <p key={`work-page__text-paragraph__${i}`}>{part}</p>
+          {paragraphs?.map((para, i) => (
+            <p key={`work-page__text-paragraph__${i}`}>
+              {para.replace("\n", "<br />")}
+            </p>
           ))}
         </WorkText>
         {otherImages.map((image, i) => (
-          <SafeImage
-            key={`work-page__image__${i}`}
-            alt="Mansion House"
-            node={image.node}
-          />
+          <SafeImage key={`work-page__image__${i}`} node={image.localFile} />
         ))}
       </Container>
     </Layout>

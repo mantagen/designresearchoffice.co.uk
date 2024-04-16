@@ -13,5 +13,6 @@
     "allowJs": true,
     "resolveJsonModule": true
   },
+  "include": ["gatsby-types.d.ts", "*.ts", "*/**/*.tsx", "*/**/*.ts"],
   "exclude": ["node_modules", "public", ".cache"]
 }

@@ -7,14 +7,29 @@
 import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
-  /* Your site config here */
   siteMetadata: {
     title: `Design Research Office`,
     author: `Valis Loizides`,
     description: `Valis Loizides, Design Research Office, London`,
     siteUrl: `https://www.designresearchoffice.co.uk`,
   },
+  graphqlTypegen: {
+    generateOnBuild: true,
+    typesOutputPath: `gatsby-types.d.ts`,
+  },
   plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-styled-components`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sitemap`,
+    `gatsby-plugin-robots-txt`,
+    {
+      resolve: `gatsby-source-wordpress`,
+      options: {
+        url: process.env.WPGRAPHQL_URL,
+      },
+    },
     {
       resolve: `gatsby-plugin-typescript`,
       options: {
@@ -23,10 +38,6 @@ const config: GatsbyConfig = {
         allExtensions: true, // defaults to false
       },
     },
-    `gatsby-plugin-image`,
-    `gatsby-plugin-styled-components`,
-    `gatsby-plugin-sharp`,
-    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -34,15 +45,13 @@ const config: GatsbyConfig = {
         path: `${__dirname}/src/`,
       },
     },
-    `gatsby-plugin-sitemap`,
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
         trackingIds: ["G-13P231HXJZ"],
       },
     },
-    `gatsby-plugin-robots-txt`
   ],
 };
 
-export default config
+export default config;
