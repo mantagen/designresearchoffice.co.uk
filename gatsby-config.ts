@@ -7,7 +7,6 @@
 import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
-  /* Your site config here */
   siteMetadata: {
     title: `Design Research Office`,
     author: `Valis Loizides`,

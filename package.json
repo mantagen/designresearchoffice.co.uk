@@ -4,7 +4,7 @@
   "description": "A website for Design Research Office architectural firm",
   "version": "1.0.0",
   "scripts": {
-    "build": "gatsby clean && gatsby build",
+    "build": "gatsby clean && dotenvx run -- gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "dotenvx run -- npm run develop",
